@@ -5,16 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import "./assets/css/index.css";
-import { UsersProvider } from "context/usersContext";
-import { SocketProvider } from "context/socketContext";
+import ContextManager from "context/ContextManager";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<SocketProvider>
-			<UsersProvider>
-				<App />
-			</UsersProvider>
-		</SocketProvider>
+		<ContextManager>
+			<App/>
+		</ContextManager>
 	</React.StrictMode>,
 	document.getElementById("root")
 );

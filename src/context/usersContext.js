@@ -50,11 +50,11 @@ const UsersProvider = ({ children }) => {
 		});
 	};
 
-	useEffect(() => {
-		socket.on("fetch_response", fetchMessageResponse);
-		socket.on("start_typing", setUserAsTyping);
-		socket.on("stop_typing", setUserAsNotTyping);
-	}, [socket]);
+	// useEffect(() => {
+	// 	socket.on("fetch_response", fetchMessageResponse);
+	// 	socket.on("start_typing", setUserAsTyping);
+	// 	socket.on("stop_typing", setUserAsNotTyping);
+	// }, [socket]);
 
 	const setUserAsUnread = (userId) => {
 		_updateUserProp(userId, "unread", 0);
@@ -73,7 +73,7 @@ const UsersProvider = ({ children }) => {
 		usersCopy[userIndex].messages.TODAY.push(newMsgObject);
 		setUsers(usersCopy);
 
-		socket.emit("fetch_response", { userId });
+		// socket.emit("fetch_response", { userId });
 	};
 
 	return (
