@@ -10,11 +10,11 @@
     fill: rgb(108, 113, 117);
 }
 
-.dark-theme .loader__progress {
+.dark-theme .loader__container {
     background: rgb(42, 47, 50);
 }
 
-.dark-theme .loader__progress::after {
+.dark-theme .loader__progress {
     background: rgb(12, 137, 124);
 }
 
