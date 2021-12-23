@@ -27,7 +27,7 @@ const Convo = ({ lastMsgRef, messages: allMessages }) => {
 								? lastMsgRef
 								: undefined;
 						return (
-							<>
+							<React.Fragment key={msgIndex}>
 								{message.image ? (
 									<div
 										className={`chat__msg chat__img-wrapper ${
@@ -104,7 +104,7 @@ const Convo = ({ lastMsgRef, messages: allMessages }) => {
 										</button>
 									</p>
 								)}
-							</>
+							</React.Fragment>
 						);
 					})}
 				</div>

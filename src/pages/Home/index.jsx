@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/main.css";
 import Icon from "components/Icon";
 import introImgLight from "assets/images/intro-connection-light.jpg";
 import introImgDark from "assets/images/intro-connection-dark.jpg";
 
 const Home = () => {
-	const darkTheme = document.body.classList.contains("dark-theme");
+	const [darkTheme, setDarkTheme] = useState(false)
+
+	const onSelectMode = () => {
+		// setMode(mode)
+		const userPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+		setDarkTheme(userPrefersDark)
+	  }
+
+	useEffect(() => {
+		// Add listener to update styles
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => onSelectMode());
+	  
+		// Setup dark/light mode for the first time
+		onSelectMode()
+		// Remove listener
+		return () => {
+		  window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', () => {
+		  });
+		}
+	  }, []);
 
 	return (
 		<div className="home">

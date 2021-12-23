@@ -12,19 +12,32 @@ import Authentication from "pages/Authentication";
 import Axios from "axios"
 Axios.defaults.baseURL = "http://127.0.0.1:8000"
 
-const userPrefersDark =
-	window.matchMedia &&
-	window.matchMedia("(prefers-color-scheme: dark)").matches;
-
 function App() {
 	const appState = useContext(StateContext)
 	const [appLoaded, setAppLoaded] = useState(false);
 	const [startLoadProgress, setStartLoadProgress] = useState(false);
 
+	const onSelectMode = () => {
+		const userPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+		if (userPrefersDark)
+		  document.body.classList.add('dark-theme')
+		else
+		  document.body.classList.remove('dark-theme')
+	  }
+
 	useEffect(() => {
-		if (userPrefersDark) document.body.classList.add("dark-theme");
+		// Add listener to update styles
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => onSelectMode());
+	  
+		// Setup dark/light mode for the first time
+		onSelectMode()
 		stopLoad();
-	}, []);
+		// Remove listener
+		return () => {
+		  window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', () => {
+		  });
+		}
+	  }, []);
 
 	const stopLoad = () => {
 		setStartLoadProgress(true);
@@ -33,7 +46,7 @@ function App() {
 
 	if(!appState.loggedIn) return <Authentication />
 
-	if (!appLoaded) return <Loader done={startLoadProgress} />;
+	if (!appState.appLoaded) return <Loader done={startLoadProgress} />;
 
 	return (
 		<SocketProvider>
@@ -44,8 +57,8 @@ function App() {
 						<div className="app-content">
 							<Sidebar />
 							<Switch>
+								<Route path="/" exact component={Home} />
 								<Route path="/chat/:id" component={Chat} />
-								<Route component={Home} />
 							</Switch>
 						</div>
 					</Router>

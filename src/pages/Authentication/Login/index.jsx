@@ -1,9 +1,11 @@
 import "./styles/main.css"
 import { useState, useContext } from "react"
 import Axios from "axios";
+import { useHistory } from 'react-router-dom';
 import DispatchContext from "context/DispatchContext";
 
 const Register = ({setLogin}) => {
+    const history = useHistory()
     const appDispatch = useContext(DispatchContext)
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
@@ -16,6 +18,7 @@ const Register = ({setLogin}) => {
           const response = await Axios.post("/register", {phone, password})
           console.log(response.data)
           appDispatch({type:"login", data: {token: response.data.key}})
+          history.push("/")
         } catch (error) {
             console.error(error.response.data)
             if("phone" in error.response.data)

@@ -6,7 +6,7 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 	return (
 		<header className="header chat__header">
 			<div className="chat__avatar-wrapper" onClick={openProfileSidebar}>
-				<img src={user.profile_picture} alt={user?.name} className="avatar" />
+				<img src={user.chat_with.profile_picture} alt={user?.name} className="avatar" />
 			</div>
 
 			<div className="chat__contact-wrapper" onClick={openProfileSidebar}>

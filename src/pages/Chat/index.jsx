@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./styles/main.css";
 import EmojiTray from "./components/EmojiTray";
 import ChatInput from "./components/ChatInput";
@@ -9,12 +9,15 @@ import Search from "./components/Search";
 import Profile from "./components/Profile";
 import Convo from "./components/Convo";
 import { useUsersContext } from "context/usersContext";
+import StateContext from "context/StateContext";
 
 const Chat = ({ match, history }) => {
-	const { users, setUserAsUnread, addNewMessage } = useUsersContext();
+	// const { users, setUserAsUnread, addNewMessage } = useUsersContext();
+	const { setUserAsUnread, addNewMessage } = useUsersContext();
+	const appState = useContext(StateContext)
+	const users = appState.chats
 
 	const userId = match.params.id;
-	let user = users.filter((user) => user.id === Number(userId))[0];
 
 	const lastMsgRef = useRef(null);
 	const [showAttach, setShowAttach] = useState(false);
@@ -22,6 +25,8 @@ const Chat = ({ match, history }) => {
 	const [showProfileSidebar, setShowProfileSidebar] = useState(false);
 	const [showSearchSidebar, setShowSearchSidebar] = useState(false);
 	const [newMessage, setNewMessage] = useState("");
+
+	let user = users.filter((user) => user.id === Number(userId))[0];
 
 	useEffect(() => {
 		if (!user) history.push("/");
@@ -53,6 +58,10 @@ const Chat = ({ match, history }) => {
 		setNewMessage("");
 		scrollToLastMsg();
 	};
+
+	if (!user) {
+		return <></>
+	}
 
 	return (
 		<div className="chat">

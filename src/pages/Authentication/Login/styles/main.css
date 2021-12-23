@@ -2,10 +2,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
 .login-page {
-  width: 360px;
+  width: 100%;
   padding: 8% 0 0;
   margin: auto;
+  background: #76b852;
+  background: -webkit-linear-gradient(right, #76b852, #45175f);
+  background: -moz-linear-gradient(right, #76b852, #45175f);
+  background: -o-linear-gradient(right, #76b852, #45175f);
+  background: linear-gradient(to left, #76b852, #45175f);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;  
+  height: 100vh;
 }
+
 .form {
   position: relative;
   z-index: 1;
@@ -112,14 +122,4 @@ h1 {
   -webkit-background-clip: text;
 }
 
-body {
-  background: #76b852;
-  background: -webkit-linear-gradient(right, #76b852, #45175f);
-  background: -moz-linear-gradient(right, #76b852, #45175f);
-  background: -o-linear-gradient(right, #76b852, #45175f);
-  background: linear-gradient(to left, #76b852, #45175f);
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;      
-}
 

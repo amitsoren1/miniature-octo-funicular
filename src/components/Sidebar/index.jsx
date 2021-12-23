@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./styles/main.css";
 import avatar from "assets/images/profile-picture-girl-1.jpeg";
 import Icon from "components/Icon";
@@ -6,14 +6,19 @@ import Alert from "./Alert";
 import Contact from "./Contact";
 import OptionsBtn from "components/OptionsButton";
 import { useUsersContext } from "context/usersContext";
+import StateContext from "context/StateContext";
 
 const Sidebar = () => {
-	const { users: contacts } = useUsersContext();
+	// const { users: contacts } = useUsersContext();
+	const appState = useContext(StateContext)
+	const contacts = appState.chats
+	// console.log(contacts)
+
 	return (
 		<aside className="sidebar">
 			<header className="header">
 				<div className="sidebar__avatar-wrapper">
-					<img src={avatar} alt="Karen Okonkwo" className="avatar" />
+					<img src={appState.user.profile_picture} alt="profile picture" className="avatar" />
 				</div>
 				<div className="sidebar__actions">
 					<button className="sidebar__action" aria-label="Status">
@@ -54,7 +59,7 @@ const Sidebar = () => {
 			</div>
 			<div className="sidebar__contacts">
 				{contacts.map((contact, index) => (
-					<Contact key={index} contact={contact} />
+					<Contact key={index} contact={{...contact, profile_picture: contact.chat_with.profile_picture}}/>
 				))}
 			</div>
 		</aside>
