@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./styles/main.css";
 import avatar from "assets/images/profile-picture-girl-1.jpeg";
 import Icon from "components/Icon";
@@ -7,14 +7,21 @@ import Contact from "./Contact";
 import OptionsBtn from "components/OptionsButton";
 import { useUsersContext } from "context/usersContext";
 import StateContext from "context/StateContext";
+import Contacts from "./Contacts";
 
 const Sidebar = () => {
 	// const { users: contacts } = useUsersContext();
 	const appState = useContext(StateContext)
 	const contacts = appState.chats
 	// console.log(contacts)
+	const [scontacts, setScontacts] = useState(true)
+
+	function handleSlide() {
+		setScontacts(!scontacts)
+	}
 
 	return (
+		<>
 		<aside className="sidebar">
 			<header className="header">
 				<div className="sidebar__avatar-wrapper">
@@ -27,7 +34,7 @@ const Sidebar = () => {
 							className="sidebar__action-icon sidebar__action-icon--status"
 						/>
 					</button>
-					<button className="sidebar__action" aria-label="New chat">
+					<button className="sidebar__action" aria-label="New chat" onClick={handleSlide}>
 						<Icon id="chat" className="sidebar__action-icon" />
 					</button>
 					<OptionsBtn
@@ -62,7 +69,11 @@ const Sidebar = () => {
 					<Contact key={index} contact={{...contact, profile_picture: contact.chat_with.profile_picture}}/>
 				))}
 			</div>
+			<div className={scontacts?'slider show_contacts':"slider"}>
+				<Contacts handleSlide={handleSlide}/>
+			</div>
 		</aside>
+	</>
 	);
 };
 

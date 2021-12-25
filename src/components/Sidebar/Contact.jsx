@@ -4,13 +4,7 @@ import { Link } from "react-router-dom";
 import formatTime from "utils/formatTime";
 import { useUsersContext } from "context/usersContext";
 
-function openForm() {
-	document.getElementById("myForm").style.display = "block"
-}
 
-function closeForm() {
-	document.getElementById("myForm").style.display = "none"
-}
 
 const Contact = ({ contact }) => {
 	const { setUserAsUnread } = useUsersContext();
@@ -33,8 +27,7 @@ const Contact = ({ contact }) => {
 
 
 	return (
-		<>
-		<Link
+	<Link
 			className="sidebar-contact"
 			to={`/chat/${contact.id}`}
 			onClick={() => setUserAsUnread(contact.id)}
@@ -93,29 +86,6 @@ const Contact = ({ contact }) => {
 				</div>
 			</div>
 		</Link>
-		<div
-		className="sidebar-contact"
-	>
-		<div className="sidebar-contact__content">
-			<button class="open-button" onClick={openForm}>Open Form</button>
-			<div class="form-popup" id="myForm">
-
-  <form class="form-container">
-    <h3>Add new contact</h3>
-
-    <label for="phone"><b>Phone</b></label>
-    <input type="text" placeholder="Enter Phone" name="phone" required/>
-
-    <label for="name"><b>Name</b></label>
-    <input type="text" placeholder="Enter Name" name="name" required/>
-
-    <button type="submit" class="btn">Add</button>
-    <button type="button" class="btn cancel" onClick={closeForm}>Close</button>
-  </form>
-</div>
-		</div>
-	</div>
-	</>
 	);
 };
 

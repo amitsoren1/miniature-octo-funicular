@@ -46,7 +46,7 @@ const Loader = ({ done }) => {
 			appDispatch({type: "setChats", data: formatChats(res1.data)})
 			appDispatch({type: "updateUser", data: res2.data})
 			appDispatch({type: "loadApp"})
-			console.log(res2.data)
+			// console.log(res2.data)
 		  })).catch(Axios.spread((error1, error2) => {
 			  console.error("An error occured on loading")
 		  }))
