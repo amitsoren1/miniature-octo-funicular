@@ -11,6 +11,7 @@ function ContextManager({children}) {
           profile_picture: null
         },
         chats: [],
+        contacts: [],
         unreadChatCount: 0,
       }
 
@@ -33,6 +34,12 @@ function ContextManager({children}) {
             return
           case "setChats":
             draft.chats = action.data
+            return
+          case "setContacts":
+            draft.contacts = action.data
+            return
+          case "addContact":
+            draft.contacts.push(action.data)
             return
           case "loadApp":
             draft.appLoaded = true

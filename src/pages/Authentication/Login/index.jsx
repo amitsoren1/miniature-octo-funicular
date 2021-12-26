@@ -16,7 +16,6 @@ const Register = ({setLogin}) => {
         e.preventDefault()
         try {
           const response = await Axios.post("/register", {phone, password})
-          console.log(response.data)
           appDispatch({type:"login", data: {token: response.data.key}})
           history.push("/")
         } catch (error) {

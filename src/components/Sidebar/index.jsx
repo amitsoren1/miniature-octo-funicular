@@ -14,7 +14,7 @@ const Sidebar = () => {
 	const appState = useContext(StateContext)
 	const contacts = appState.chats
 	// console.log(contacts)
-	const [scontacts, setScontacts] = useState(true)
+	const [scontacts, setScontacts] = useState(false)
 
 	function handleSlide() {
 		setScontacts(!scontacts)
