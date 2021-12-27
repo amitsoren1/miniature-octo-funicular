@@ -1,9 +1,11 @@
 import Icon from "components/Icon";
-import React from "react";
+import React, { useContext } from "react";
 import media from "assets/images/women.jpeg";
 import formatTime from "utils/formatTime";
+import StateContext from "context/StateContext";
 
 const Convo = ({ lastMsgRef, messages: allMessages }) => {
+	const appState = useContext(StateContext)
 	const dates = Object.keys(allMessages);
 
 	return dates.map((date, dateIndex) => {
@@ -62,7 +64,7 @@ const Convo = ({ lastMsgRef, messages: allMessages }) => {
 											<Icon id="downArrow" className="chat__msg-options-icon" />
 										</button>
 									</div>
-								) : message.sender ? (
+								) : message.sender!==appState.user.id ? (
 									<p className="chat__msg chat__msg--rxd" ref={assignRef()}>
 										<span>{message.content}</span>
 										<span className="chat__msg-filler"> </span>

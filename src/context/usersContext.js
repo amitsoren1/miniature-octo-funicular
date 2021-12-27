@@ -1,12 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import contacts from "data/contacts";
-import { useSocketContext } from "./socketContext";
+import { useSocketContext } from "./SocketContext";
+import StateContext from "./StateContext";
+import DispatchContext from "./DispatchContext";
+import {v4 as uuid4} from "uuid"
 
 const UsersContext = createContext();
 
 const useUsersContext = () => useContext(UsersContext);
 
 const UsersProvider = ({ children }) => {
+	const appState = useContext(StateContext)
+	const appDispatch = useContext(DispatchContext)
 	const socket = useSocketContext();
 
 	const [users, setUsers] = useState(contacts);
@@ -60,7 +65,7 @@ const UsersProvider = ({ children }) => {
 		_updateUserProp(userId, "unread", 0);
 	};
 
-	const addNewMessage = (userId, message) => {
+	const addNewMessage2 = (userId, message) => {
 		let userIndex = users.findIndex((user) => user.id === userId);
 		const usersCopy = [...users];
 		const newMsgObject = {
@@ -72,6 +77,30 @@ const UsersProvider = ({ children }) => {
 
 		usersCopy[userIndex].messages.TODAY.push(newMsgObject);
 		setUsers(usersCopy);
+
+		// socket.emit("fetch_response", { userId });
+	};
+
+	const addNewMessage = (chatId, message) => {
+		let chatIndex = appState.chats.findIndex((chat) => chat.id === chatId);
+		// const chatsCopy = [...appState.chats];
+		const chatsCopy = JSON.parse(JSON.stringify(appState.chats))
+		const newMsgObject = {
+			uuid: uuid4(),
+			content: message,
+			sender: 45,
+			sent_for: appState.user.id,
+			time: new Date().toLocaleTimeString('en-IN', {timeZone: 'Asia/Kolkata'}).split(" ")[0],
+			date: new Date().toLocaleDateString('en-IN', {timeZone: 'Asia/Kolkata'}).split("/"),
+			status: "sent",
+		};
+		newMsgObject.date = newMsgObject.date[2]+"-"+newMsgObject.date[0]+"-"+newMsgObject.date[1]
+		console.log(newMsgObject)
+		if(chatsCopy[chatIndex].messages.TODAY)
+			chatsCopy[chatIndex].messages.TODAY.push(newMsgObject);
+		else
+			chatsCopy[chatIndex].messages[new Date().toLocaleDateString()] = [newMsgObject]
+		appDispatch({type: "setChats", data: chatsCopy})
 
 		// socket.emit("fetch_response", { userId });
 	};

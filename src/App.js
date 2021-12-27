@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { SocketProvider } from "context/socketContext";
+import { SocketProvider } from "context/SocketContext";
 import { UsersProvider } from "context/usersContext";
 import StateContext from "context/StateContext";
 import Loader from "./components/Loader";

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import Icon from "components/Icon";
 import { Link } from "react-router-dom";
 import formatTime from "utils/formatTime";
 import { useUsersContext } from "context/usersContext";
+import StateContext from "context/StateContext";
 
 
 
 const Contact = ({ contact }) => {
+	const appState = useContext(StateContext)
 	const { setUserAsUnread } = useUsersContext();
 	const getLastMessage = () => {
 		const messageDates = Object.keys(contact.messages);
@@ -24,12 +26,12 @@ const Contact = ({ contact }) => {
 	// 		time: "08:11:26",
 	// 		status: null,
 	// 	}
-
+	let chat = appState.chats.filter((chat) => chat.chat_with.id === Number(contact.profile.id))[0]
 
 	return (
 	<Link
 			className="sidebar-contact"
-			to={`/chat/${contact.id}`}
+			to={`/chat/${chat.id}`}
 			onClick={() => setUserAsUnread(contact.id)}
 		>
 			<div className="sidebar-contact__avatar-wrapper">

@@ -35,6 +35,9 @@ function ContextManager({children}) {
           case "setChats":
             draft.chats = action.data
             return
+          case "addChat":
+            draft.chats.push(action.data)
+            return
           case "setContacts":
             draft.contacts = action.data
             return

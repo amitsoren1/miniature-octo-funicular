@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Icon from "components/Icon";
 import OptionsBtn from "components/OptionsButton";
+import StateContext from "context/StateContext";
 
 const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
+	const appState = useContext(StateContext)
+	let contact = appState.contacts.filter((contact) => contact.profile.id === user.chat_with.id)[0];
+
 	return (
 		<header className="header chat__header">
 			<div className="chat__avatar-wrapper" onClick={openProfileSidebar}>
@@ -10,7 +14,7 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 			</div>
 
 			<div className="chat__contact-wrapper" onClick={openProfileSidebar}>
-				<h2 className="chat__contact-name"> {user?.name}</h2>
+				<h2 className="chat__contact-name"> {contact?contact.name:`+91 ${user.phone}`}</h2>
 				<p className="chat__contact-desc">
 					{user.typing ? "typing..." : "online"}
 				</p>

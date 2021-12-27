@@ -21,6 +21,9 @@ const Loader = ({ done }) => {
 	const [progress1, setProgress1] = useState(0)
 	const [progress2, setProgress2] = useState(0)
 	const [progress3, setProgress3] = useState(0)
+	const [chats, setChats] = useState(null)
+	const [profile, setProfile] = useState(null)
+	const [contacts, setContacts] = useState(null)
 
 	useEffect(()=>{
 		async function fetch(){
@@ -32,7 +35,8 @@ const Loader = ({ done }) => {
 					setProgress1(percentCompleted)
 					}
 				})
-				appDispatch({type: "setChats", data: formatChats(res1.data)})
+				// appDispatch({type: "setChats", data: formatChats(res1.data)})
+				setChats(formatChats(res1.data))
 			} catch(error) {
 				console.error("An error occured on loading chats")
 				appDispatch({type: "logout"})
@@ -47,7 +51,8 @@ const Loader = ({ done }) => {
 					setProgress2(percentCompleted)
 					}
 				})
-				appDispatch({type: "updateUser", data: res2.data})
+				// appDispatch({type: "updateUser", data: res2.data})
+				setProfile(res2.data)
 			} catch(error) {
 				console.error("An error occured on loading profile")
 				appDispatch({type: "logout"})
@@ -63,7 +68,8 @@ const Loader = ({ done }) => {
 				}
 				})
 				// console.log(res3.data)
-				appDispatch({type: "setContacts", data: res3.data})
+				// appDispatch({type: "setContacts", data: res3.data})
+				setContacts(res3.data)
 			} catch(error) {
 				console.error("An error occured on loading contacts")
 				appDispatch({type: "logout"})
@@ -81,15 +87,22 @@ const Loader = ({ done }) => {
 		// 	  appDispatch({type: "logout"})
 		//   }))
 		}
-	if(!appState.appLoaded)
+	if(!loadapp)
 		{
 			fetch()
 			setLoadapp(true)
 		}
-	return ()=>{
-		appDispatch({type: "loadApp"})
-	}
-	}, [loadapp])
+	else if(chats!=null && profile!=null && contacts!=null)
+		{
+			appDispatch({type: "setChats", data: chats})
+			appDispatch({type: "updateUser", data: profile})
+			appDispatch({type: "setContacts", data: contacts})
+			appDispatch({type: "loadApp"})
+		}
+	// return ()=>{
+	// 	appDispatch({type: "loadApp"})
+	// }
+	}, [loadapp, chats, profile, contacts])
 
 	return (
 		<div className="loader">

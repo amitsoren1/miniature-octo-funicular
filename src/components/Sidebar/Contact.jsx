@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import Icon from "components/Icon";
 import { Link } from "react-router-dom";
 import formatTime from "utils/formatTime";
 import { useUsersContext } from "context/usersContext";
+import StateContext from "context/StateContext";
 
 
 
 const Contact = ({ contact }) => {
+	const appState = useContext(StateContext)
 	const { setUserAsUnread } = useUsersContext();
 	const getLastMessage = () => {
 		const messageDates = Object.keys(contact.messages);
@@ -48,7 +50,7 @@ const Contact = ({ contact }) => {
 				</div>
 				<div className="sidebar-contact__bottom-content">
 					<p className="sidebar-contact__message-wrapper">
-						{lastMessage.status && (
+						{lastMessage.sender===appState.user.id && (
 							<Icon
 								id={
 									lastMessage?.status === "sent" ? "singleTick" : "doubleTick"

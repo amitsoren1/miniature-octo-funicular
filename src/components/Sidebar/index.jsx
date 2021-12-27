@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import "./styles/main.css";
 import avatar from "assets/images/profile-picture-girl-1.jpeg";
+import isEmpty from "utils/checker"
 import Icon from "components/Icon";
 import Alert from "./Alert";
 import Contact from "./Contact";
@@ -65,9 +66,13 @@ const Sidebar = () => {
 				<input className="search" placeholder="Search or start a new chat" />
 			</div>
 			<div className="sidebar__contacts">
-				{contacts.map((contact, index) => (
-					<Contact key={index} contact={{...contact, profile_picture: contact.chat_with.profile_picture}}/>
-				))}
+				{contacts.map((contact, index) => {
+					if(!isEmpty(contact.messages))
+						return <Contact key={index} contact={{...contact, profile_picture: contact.chat_with.profile_picture}}/>
+					else
+						return ""
+					})
+				}
 			</div>
 			<div className={scontacts?'slider show_contacts':"slider"}>
 				<Contacts handleSlide={handleSlide}/>

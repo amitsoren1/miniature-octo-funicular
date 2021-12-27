@@ -1,10 +1,10 @@
 import "./styles/main.css";
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import StateContext from "context/StateContext"
 import Icon from "components/Icon"
 import Alert from "./Alert"
 import OptionsBtn from "components/OptionsButton"
-
+import parseMessages from "utils/parseMessages";
 import Contact from "./Contact1"
 import Axios from "axios";
 import DispatchContext from "context/DispatchContext";
@@ -18,6 +18,9 @@ function Contacts({handleSlide}) {
     const [phone, setPhone] = useState("")
     const [nameerror, setNameerror] = useState(null)
     const [phoneerror, setPhoneerror] = useState(null)
+    const [newContact, setNewContact] = useState(null)
+    const [newChat, setnewChat] = useState(null)
+    const [loaded, setLoaded] = useState(false)
 
     function openForm() {
         SetSform(true)
@@ -25,15 +28,27 @@ function Contacts({handleSlide}) {
 
     function closeForm() {
         SetSform(false)
+        setName("")
+        setPhone("")
+        setNameerror(null)
+        setPhoneerror(null)
     }
 
     async function handleSubmit(e) {
         e.preventDefault()
         try {
             const res = await Axios.post("/contact/create", {name, phone},
-                                         {headers: {"Authorization" : `Token ${appState.user.token}`}})
-            appDispatch({type: "addContact", data: res.data})
+                {headers: {"Authorization" : `Token ${appState.user.token}`}})
+
+            let chat = appState.chats.filter((chat) => chat.chat_with.id === Number(res.data.profile.id))[0]
+            if(!chat) {
+                const res3 = await Axios.post("/chat/create", {chat_with: res.data.profile.id},
+                    {headers: {"Authorization" : `Token ${appState.user.token}`}})
+                setnewChat({...res3.data, messages: parseMessages(res3.data.messages), chat_with: res.data.profile})
+            }
+            setNewContact(res.data)
             closeForm()
+            setLoaded(true)
         } catch (error) {
             console.log(error.response.data)
             if("phone" in error.response.data)
@@ -52,6 +67,15 @@ function Contacts({handleSlide}) {
         setName(e.target.value)
         setNameerror(null)
     }
+
+    useEffect(()=>{
+        if(loaded) {
+            if(newContact!=null)
+                appDispatch({type: "addContact", data: newContact})
+            if(newChat!=null)
+                appDispatch({type: "addChat", data: newChat})
+        }
+    }, [newContact, newChat, loaded])
 
     return <>
     <div align="left" className="contacts-header" style={{marginTop:"15%", marginBottom:"4%"}}>

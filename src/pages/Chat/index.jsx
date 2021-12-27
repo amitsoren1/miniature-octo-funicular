@@ -10,6 +10,7 @@ import Profile from "./components/Profile";
 import Convo from "./components/Convo";
 import { useUsersContext } from "context/usersContext";
 import StateContext from "context/StateContext";
+import isEmpty from "utils/checker";
 
 const Chat = ({ match, history }) => {
 	// const { users, setUserAsUnread, addNewMessage } = useUsersContext();
@@ -50,7 +51,8 @@ const Chat = ({ match, history }) => {
 	};
 
 	const scrollToLastMsg = () => {
-		lastMsgRef.current.scrollIntoView();
+		if(!isEmpty(user.messages))
+			lastMsgRef.current.scrollIntoView();
 	};
 
 	const submitNewMessage = () => {
