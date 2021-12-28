@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { SocketProvider } from "context/SocketContext";
+import { SocketProvider, useSocketContext } from "context/SocketContext";
 import { UsersProvider } from "context/usersContext";
 import StateContext from "context/StateContext";
 import Loader from "./components/Loader";
@@ -13,6 +13,7 @@ import Axios from "axios"
 Axios.defaults.baseURL = "http://127.0.0.1:8000"
 
 function App() {
+	const socket = useSocketContext()
 	const appState = useContext(StateContext)
 	const [appLoaded, setAppLoaded] = useState(false);
 	const [startLoadProgress, setStartLoadProgress] = useState(false);
@@ -46,25 +47,23 @@ function App() {
 
 	if(!appState.loggedIn) return <Authentication />
 
-	if (!appState.appLoaded) return <Loader done={startLoadProgress} />;
+	if (!appState.appLoaded || !appState.socketConnected) return <Loader done={startLoadProgress} />;
 
 	return (
-		<SocketProvider>
-			<UsersProvider>
-				<div className="app">
-					<p className="app__mobile-message"> Only available on desktop 😊. </p>
-					<Router>
-						<div className="app-content">
-							<Sidebar />
-							<Switch>
-								<Route path="/" exact component={Home} />
-								<Route path="/chat/:id" component={Chat} />
-							</Switch>
-						</div>
-					</Router>
-				</div>
-			</UsersProvider>
-		</SocketProvider>
+		<UsersProvider>
+			<div className="app">
+				<p className="app__mobile-message"> Only available on desktop 😊. </p>
+				<Router>
+					<div className="app-content">
+						<Sidebar />
+						<Switch>
+							<Route path="/" exact component={Home} />
+							<Route path="/chat/:id" component={Chat} />
+						</Switch>
+					</div>
+				</Router>
+			</div>
+		</UsersProvider>
 	);
 }
 

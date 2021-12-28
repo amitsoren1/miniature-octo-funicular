@@ -86,24 +86,39 @@ const UsersProvider = ({ children }) => {
 		// const chatsCopy = [...appState.chats];
 		const chatsCopy = JSON.parse(JSON.stringify(appState.chats))
 		const newMsgObject = {
-			uuid: uuid4(),
+			uid: uuid4(),
 			content: message,
-			sender: 45,
-			sent_for: appState.user.id,
+			sender: {id: appState.user.id, profile_picture: appState.user.profile_picture,
+					 phone: appState.user.phone},
+			sent_for: chatsCopy[chatIndex].chat_with.id,
 			time: new Date().toLocaleTimeString('en-IN', {timeZone: 'Asia/Kolkata'}).split(" ")[0],
 			date: new Date().toLocaleDateString('en-IN', {timeZone: 'Asia/Kolkata'}).split("/"),
 			status: "sent",
 		};
-		newMsgObject.date = newMsgObject.date[2]+"-"+newMsgObject.date[0]+"-"+newMsgObject.date[1]
-		console.log(newMsgObject)
-		if(chatsCopy[chatIndex].messages.TODAY)
-			chatsCopy[chatIndex].messages.TODAY.push(newMsgObject);
-		else
-			chatsCopy[chatIndex].messages[new Date().toLocaleDateString()] = [newMsgObject]
-		appDispatch({type: "setChats", data: chatsCopy})
+		newMsgObject.date = newMsgObject.date[2]+"-"+newMsgObject.date[1]+"-"+newMsgObject.date[0]
+		const msgCopy = {...newMsgObject, sender: appState.user.id}
+		// console.log(newMsgObject)
+		// if(chatsCopy[chatIndex].messages.TODAY)
+		// 	chatsCopy[chatIndex].messages.TODAY.push(newMsgObject);
+		// else
+		// 	chatsCopy[chatIndex].messages[new Date().toLocaleDateString()] = [newMsgObject]
+		// appDispatch({type: "addChats", data: chatsCopy})
+		appDispatch({type: "addMessage", data: {message: msgCopy, chatId: chatId}})
 
-		// socket.emit("fetch_response", { userId });
+		socket.emit("send_message", { newMsgObject, chatId });
 	};
+
+	const handleIncomingMessage = (message) => {
+		let chat = appState.chats.filter(chat => chat.chat_with.id === message.sender.id)[0]
+		appDispatch({type: "addMessage", data: {message: {...message, sender:message.sender.id}, chatId: chat.id}})
+	}
+
+	useEffect(()=>{
+		socket.on('incoming_message', function(msg) {
+			console.log("incoming  message")
+			handleIncomingMessage(msg)
+			})
+	}, [])
 
 	return (
 		<UsersContext.Provider value={{ users, setUserAsUnread, addNewMessage }}>

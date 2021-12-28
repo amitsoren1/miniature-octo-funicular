@@ -1,17 +1,19 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import io from "socket.io-client";
+import DispatchContext from "./DispatchContext";
+import StateContext from "./StateContext";
 
 const SOCKET_URL = window.location.origin.includes("localhost")
 	? "http://localhost:8000"
 	: "https://whatsapp-web-clone-backend.herokuapp.com/";
 
-// const socket = io.connect(SOCKET_URL);
-const socket = "fghfd";
+const socket = io.connect(SOCKET_URL);
+// const socket = "fghfd";
 // socket.on('connect', function(msg) {
 // 	// socket.emit('my_event', {data: 'I\'m connected!'});
 // 	console.log("connected")
 // 	console.log(msg)
-// 	socket.emit("dothing", {data: "hoooooohooooooo"})
+// 	// socket.emit("enter_room", {data: "hoooooohooooooo"})
 // });
 
 // socket.on('disconnect', function() {
@@ -22,15 +24,42 @@ const socket = "fghfd";
 // 	console.log(msg)
 // });
 
-// socket.on('hoodone', function(msg) {
-// 	console.log("hoodone")
-// });
+socket.on('hoodone', function(msg) {
+	console.log(msg)
+});
+
+// socket.on('incoming_message', function(msg) {
+// 	console.log("incoming  message")
+// 	})
+
 
 const SocketContext = createContext();
 
 const useSocketContext = () => useContext(SocketContext);
 
 const SocketProvider = ({ children }) => {
+	const appState = useContext(StateContext)
+	const appDispatch = useContext(DispatchContext)
+
+	useEffect(()=>{
+		socket.on('connect', function(msg) {
+		// socket.emit('my_event', {data: 'I\'m connected!'});
+			console.log("connected")
+			console.log(msg)
+			appDispatch({type: "connectedSocket"})
+			})
+
+		socket.on('disconnect', function(msg) {
+			console.log("disconnected")
+			appDispatch({type: "disconnectedSocket"})
+			})
+	}, [])
+
+	useEffect(()=>{
+		if(appState.socketConnected && appState.appLoaded)
+			socket.emit("join", {id: appState.user.id})
+	}, [appState.appLoaded])
+
 	return (
 		<SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
 	);

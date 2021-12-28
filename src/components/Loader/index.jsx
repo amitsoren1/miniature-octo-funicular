@@ -97,12 +97,13 @@ const Loader = ({ done }) => {
 			appDispatch({type: "setChats", data: chats})
 			appDispatch({type: "updateUser", data: profile})
 			appDispatch({type: "setContacts", data: contacts})
-			appDispatch({type: "loadApp"})
+			if(appState.socketConnected)
+				appDispatch({type: "loadApp"})
 		}
 	// return ()=>{
 	// 	appDispatch({type: "loadApp"})
 	// }
-	}, [loadapp, chats, profile, contacts])
+	}, [loadapp, chats, profile, contacts, appState.socketConnected])
 
 	return (
 		<div className="loader">

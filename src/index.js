@@ -6,11 +6,14 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./assets/css/index.css";
 import ContextManager from "context/ContextManager";
+import {SocketProvider} from "context/SocketContext";
 
 ReactDOM.render(
 	<React.StrictMode>
 		<ContextManager>
-			<App/>
+			<SocketProvider>
+				<App/>
+			</SocketProvider>
 		</ContextManager>
 	</React.StrictMode>,
 	document.getElementById("root")
