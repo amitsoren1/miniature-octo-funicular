@@ -18,6 +18,16 @@
     transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
+.slider2{
+    position: absolute;
+    right:100%;
+    width: 100%;
+    height:100%;
+    background: rgb(0, 175, 156);
+    transition: right 0.5s;
+    transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+
   /* .sidebar:hover > .slider{
     right:0;
   } */

@@ -5,9 +5,9 @@ import StateContext from "./StateContext"
 
 function ContextManager({children}) {
     const initialState = {
-        appLoaded: false,
-        loggedIn: Boolean(localStorage.getItem("appToken")),
-        socketConnected: false,
+        appLoaded: true,
+        loggedIn: true,
+        socketConnected: true,
         user: {
           token: localStorage.getItem("appToken"),
           profile_picture: null

@@ -9,6 +9,7 @@ import OptionsBtn from "components/OptionsButton";
 import { useUsersContext } from "context/usersContext";
 import StateContext from "context/StateContext";
 import Contacts from "./Contacts";
+import Profile from "./Profile";
 
 const Sidebar = () => {
 	// const { users: contacts } = useUsersContext();
@@ -16,9 +17,14 @@ const Sidebar = () => {
 	const contacts = appState.chats
 	// console.log(contacts)
 	const [scontacts, setScontacts] = useState(false)
+	const [sprofile, setSprofile] = useState(true)
 
 	function handleSlide() {
 		setScontacts(!scontacts)
+	}
+
+	function handleSlide2() {
+		setSprofile(!sprofile)
 	}
 
 
@@ -78,6 +84,9 @@ const Sidebar = () => {
 			</div>
 			<div className={scontacts?'slider show_contacts':"slider"}>
 				<Contacts handleSlide={handleSlide}/>
+			</div>
+			<div className={sprofile?'slider2 show_contacts':"slider2"}>
+				<Profile handleSlide={handleSlide}/>
 			</div>
 		</aside>
 	</>
