@@ -27,7 +27,7 @@ const Chat = ({ match, history }) => {
 	const [showSearchSidebar, setShowSearchSidebar] = useState(false);
 	const [newMessage, setNewMessage] = useState("");
 
-	let user = users.filter((user) => user.id === Number(userId))[0];
+	let user = users.filter((user) => user.chat_with.id === Number(userId))[0];
 
 	useEffect(() => {
 		if (!user) history.push("/");
@@ -56,7 +56,7 @@ const Chat = ({ match, history }) => {
 	};
 
 	const submitNewMessage = () => {
-		addNewMessage(user.id, newMessage);
+		addNewMessage(user.chat_with.id, newMessage);
 		setNewMessage("");
 		scrollToLastMsg();
 	};
@@ -64,7 +64,6 @@ const Chat = ({ match, history }) => {
 	if (!user) {
 		return <></>
 	}
-
 	return (
 		<div className="chat">
 			<div className="chat__body">

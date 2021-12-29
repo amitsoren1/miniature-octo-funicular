@@ -31,15 +31,19 @@ const Contact = ({ contact }) => {
 	return (
 	<Link
 			className="sidebar-contact"
-			to={`/chat/${chat.id}`}
+			to={`/chat/${chat.chat_with.id}`}
 			onClick={() => setUserAsUnread(contact.id)}
 		>
 			<div className="sidebar-contact__avatar-wrapper">
-				<img
+				{contact.profile.profile_picture&&<img
 					src={contact.profile.profile_picture}
-					alt={contact.profile.profile_picture}
+					alt={contact.profile.whatsapp_name}
 					className="avatar"
-				/>
+				/>}
+				{!contact.profile.profile_picture&&<Icon
+					id="avatar"
+					className="avatar"
+				/>}
 			</div>
 			<div className="sidebar-contact__content">
 				<div className="sidebar-contact__top-content">

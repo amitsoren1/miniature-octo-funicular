@@ -2,6 +2,7 @@ import { useImmerReducer } from "use-immer"
 import DispatchContext from "./DispatchContext"
 import StateContext from "./StateContext"
 
+
 function ContextManager({children}) {
     const initialState = {
         appLoaded: false,
@@ -43,7 +44,8 @@ function ContextManager({children}) {
             draft.chats = action.data
             return
           case "addChat":
-            draft.chats.push(action.data)
+            // draft.chats.push(action.data)
+            draft.chats = [action.data, ...draft.chats]
             return
           case "setContacts":
             draft.contacts = action.data
@@ -52,11 +54,30 @@ function ContextManager({children}) {
             draft.contacts.push(action.data)
             return
           case "addMessage":
-            let chatIndex = draft.chats.findIndex((chat) => chat.id === action.data.chatId)
-            if(draft.chats[chatIndex].messages.TODAY)
-			        draft.chats[chatIndex].messages.TODAY.push(action.data.message)
+            let chatIndex = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
+            if(chatIndex==-1) {  // chat doesn't exist already so action.data.new_chat expected
+              draft.chats = [action.data.new_chat, ...draft.chats]
+              return
+            }
+            if(action.data.message.date in draft.chats[chatIndex].messages)
+			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
 		        else
 			        draft.chats[chatIndex].messages[action.data.message.date] = [action.data.message]
+            if(action.data.message.sender!==draft.user.id)
+              draft.chats[chatIndex].unread+=1
+            return
+          case "setIChatRead":
+            let chatIndex2 = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
+            draft.chats[chatIndex2].unread=0
+            return
+          case "setOChatRead":
+            // console.log("BOOOOOOOOOOOOO")
+            let chatIndex3 = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
+            Object.keys(draft.chats[chatIndex3].messages).forEach(date => {
+                for(var i=0;i<draft.chats[chatIndex3].messages[date].length;i++)
+                  if(draft.chats[chatIndex3].messages[date][i].sender===draft.user.id)
+                    draft.chats[chatIndex3].messages[date][i].status = "read"
+            });
             return
           case "loadApp":
             draft.appLoaded = true

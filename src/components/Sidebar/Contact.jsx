@@ -9,7 +9,7 @@ import StateContext from "context/StateContext";
 
 const Contact = ({ contact }) => {
 	const appState = useContext(StateContext)
-	const { setUserAsUnread } = useUsersContext();
+	const { setUserAsUnread, chatRead } = useUsersContext();
 	const getLastMessage = () => {
 		const messageDates = Object.keys(contact.messages);
 		const recentMessageDate = messageDates[messageDates.length - 1];
@@ -20,30 +20,30 @@ const Contact = ({ contact }) => {
 	};
 
 	const lastMessage = getLastMessage(contact);
-	// const lastMessage = {
-	// 		content: "mrshujbkjbhkj",
-	// 		sender: 1,
-	// 		time: "08:11:26",
-	// 		status: null,
-	// 	}
+	let contact_found = appState.contacts.filter((element) => element.profile.id === contact.chat_with.id)[0];
 
 
 	return (
 	<Link
 			className="sidebar-contact"
-			to={`/chat/${contact.id}`}
-			onClick={() => setUserAsUnread(contact.id)}
+			to={`/chat/${contact.chat_with.id}`}
+			// onClick={() => setUserAsUnread(contact.id)}
+			onClick={() => chatRead(contact.chat_with.id)}
 		>
 			<div className="sidebar-contact__avatar-wrapper">
-				<img
+				{contact.profile_picture&&<img
 					src={contact.profile_picture}
 					alt={contact.profile_picture}
 					className="avatar"
-				/>
+				/>}
+				{!contact.profile_picture&&<Icon
+					id="avatar"
+					className="avatar"
+				/>}
 			</div>
 			<div className="sidebar-contact__content">
 				<div className="sidebar-contact__top-content">
-					<h2 className="sidebar-contact__name"> {contact.chat_with.whatsapp_name} </h2>
+					<h2 className="sidebar-contact__name"> {contact_found?contact_found.name:`+91 ${contact.phone}`} </h2>
 					<span className="sidebar-contact__time">
 						{formatTime(lastMessage.time)}
 					</span>

@@ -21,12 +21,14 @@ const Sidebar = () => {
 		setScontacts(!scontacts)
 	}
 
+
 	return (
 		<>
 		<aside className="sidebar">
 			<header className="header">
 				<div className="sidebar__avatar-wrapper">
-					<img src={appState.user.profile_picture} alt="profile picture" className="avatar" />
+					{appState.user.profile_picture&&<img src={appState.user.profile_picture} alt="profile picture" className="avatar" />}
+					{!appState.user.profile_picture&&<Icon id="avatar" className="avatar"/>}
 				</div>
 				<div className="sidebar__actions">
 					<button className="sidebar__action" aria-label="Status">
