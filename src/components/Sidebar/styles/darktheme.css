@@ -76,6 +76,10 @@
     background: #323739;
 }
 
+.dark-theme .slider2 {
+    background: rgb(19, 28, 33);
+}
+
 .dark-theme .open-button {
     /* background-color: rgb(0, 175, 156); */
     background: rgb(19, 28, 33);

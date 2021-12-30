@@ -5,12 +5,12 @@ import StateContext from "./StateContext";
 
 const SOCKET_URL = window.location.origin.includes("localhost")
 	? "http://localhost:8000"
-	: "https://whatsapp-web-clone-backend.herokuapp.com/";
+	:"";
 
-// const socket = io.connect(SOCKET_URL);
+const socket = io.connect(SOCKET_URL);
 function asd(){}
 function asd2(){}
-const socket = {on: asd, emit: asd2};
+// const socket = {on: asd, emit: asd2};
 // socket.on('connect', function(msg) {
 // 	// socket.emit('my_event', {data: 'I\'m connected!'});
 // 	console.log("connected")

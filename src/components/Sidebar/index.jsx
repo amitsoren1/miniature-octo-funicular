@@ -17,7 +17,7 @@ const Sidebar = () => {
 	const contacts = appState.chats
 	// console.log(contacts)
 	const [scontacts, setScontacts] = useState(false)
-	const [sprofile, setSprofile] = useState(true)
+	const [sprofile, setSprofile] = useState(false)
 
 	function handleSlide() {
 		setScontacts(!scontacts)
@@ -32,7 +32,7 @@ const Sidebar = () => {
 		<>
 		<aside className="sidebar">
 			<header className="header">
-				<div className="sidebar__avatar-wrapper">
+				<div className="sidebar__avatar-wrapper" onClick={()=>setSprofile(true)}>
 					{appState.user.profile_picture&&<img src={appState.user.profile_picture} alt="profile picture" className="avatar" />}
 					{!appState.user.profile_picture&&<Icon id="avatar" className="avatar"/>}
 				</div>
@@ -86,7 +86,7 @@ const Sidebar = () => {
 				<Contacts handleSlide={handleSlide}/>
 			</div>
 			<div className={sprofile?'slider2 show_contacts':"slider2"}>
-				<Profile handleSlide={handleSlide}/>
+				<Profile handleSlide={handleSlide2}/>
 			</div>
 		</aside>
 	</>

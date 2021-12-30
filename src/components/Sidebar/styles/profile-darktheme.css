@@ -1,0 +1,19 @@
+.dark-theme .profile-pic__options {
+    background: rgb(42, 47, 50);
+}
+
+.dark-theme .contacts-header {
+    background: #323739;
+}
+
+.dark-theme .profile-infona {
+    background: rgb(19, 28, 33);
+}
+
+.dark-theme .profile-infona .disclaimerdiv {
+    background: rgb(19, 28, 33);
+}
+
+.dark-theme .form-inline input {
+    color: white;
+}
