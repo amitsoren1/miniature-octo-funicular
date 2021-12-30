@@ -1,0 +1,244 @@
+@import url(profile-darktheme.css);
+
+.profile-pic__container {
+    height: 300px;
+    width: 300px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    background: black;
+    cursor: pointer;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+.profile-pic__container:hover .overlay {
+    opacity: 0.8;
+}
+
+
+
+
+
+.contacts-header {
+    padding-top: 15%;
+    padding-bottom: 4%;
+    background: rgb(0, 175, 156);
+}
+
+.image {
+    position: relative;
+    width: 47%;
+    height: 47%;
+    border-radius: 50%;
+}
+
+.image:hover {
+    cursor: pointer;
+}
+
+.image__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.image__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* background: rgba(0, 0, 0, 0.6); */
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    /* transition: opacity 0.25s; */
+}
+
+.image__overlay--primary {
+    background: #323739;
+}
+
+
+.image__overlay:hover {
+    opacity: 0.8;
+}
+
+.image__clicked {
+    opacity: 0.8;
+}
+
+.image__title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.image__description {
+    font-size: 0.8em;
+    margin-top: 0.25em;
+}
+
+.profile-pic__options {
+    z-index: 10;
+    top: -100px;
+    right: -80px;
+    position: relative;
+    width: 170px;
+    padding: 10px 0;
+    /* background-color: #323739; */
+    background-color: white;
+    align-items: left;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 #00000042, 0 2px 10px 0 rgba(0, 0, 0, .16);
+    transition: all 0.2s ease-in;
+    opacity: 0;
+    transform: scale(0);
+}
+
+.profile-pic__options--active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.option-left__align {
+    text-align: left;
+}
+
+
+
+/* style for image view */
+.profilepic__Modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 11; /* Sit on top */
+    padding-top: 10px; /* Location of the box */
+    padding-bottom: 10px;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto ; /* Enable scroll if needed */
+    background-color: #20272b;
+    opacity: 0.92;
+  }
+  
+  /* Modal Content (Image) */
+  .modal-image {
+    margin: auto;
+    display: block;
+    height: 100vh;
+    width: 100vh;
+    object-fit: contain;
+  }
+
+  /* Add Animation - Zoom in the Modal */
+  .modal-image, #caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+  }
+  
+  @keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+  }
+  
+  /* The Close-view Button */
+  .close-view {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  
+  .close-view:hover,
+  .close-view:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* 100% Image Width on Smaller Screens */
+  @media only screen and (max-width: 700px){
+    .modal-image {
+      width: 100%;
+    }
+  }
+
+
+  .form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-top: 15px;
+  }
+
+  .form-inline input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    height: 25px;
+    font-size: 18px;
+    color: rgb(30, 37, 41);
+    width: 80%;
+    caret-color: rgb(0, 175, 156);
+    outline: none;
+    /* padding: 10px; */
+    /* background-color: #fff; */
+    /* border: 1px solid #ddd; */
+    /* border-bottom: 1px solid red; */
+  }
+
+  .prof_submit__btn:hover {
+    cursor: pointer;
+  }
+
+  .profile-infona {
+      margin-top: -175px;
+      background: #f8f9fa;
+  }
+
+  .profile-infona .namediv{
+    padding-left: 8%;
+    padding-top: 12px;
+    padding-bottom: 10px;
+}
+
+.profile-infona .disclaimerdiv {
+    background: #DADADA;
+    padding-left: 8%;
+    padding-right: 5%;
+    padding-top: 4%;
+    padding-bottom: 7%;
+}
+
+.profile-infona .aboutdiv {
+    padding-left: 8%;
+    padding-top: 4%;
+    padding-bottom: 10px;
+}
