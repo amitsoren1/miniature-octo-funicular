@@ -14,7 +14,7 @@ import isEmpty from "utils/checker";
 
 const Chat = ({ match, history }) => {
 	// const { users, setUserAsUnread, addNewMessage } = useUsersContext();
-	const { setUserAsUnread, addNewMessage } = useUsersContext();
+	const { setUserAsUnread, addNewMessage, chatRead } = useUsersContext();
 	const appState = useContext(StateContext)
 	const users = appState.chats
 
@@ -39,6 +39,8 @@ const Chat = ({ match, history }) => {
 
 	useEffect(() => {
 		user && scrollToLastMsg();
+		if(user)
+			chatRead(user.chat_with.id)
 	}, [users]);
 
 	const openSidebar = (cb) => {

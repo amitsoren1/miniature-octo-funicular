@@ -5,6 +5,7 @@ import StateContext from "./StateContext";
 import DispatchContext from "./DispatchContext";
 import {v4 as uuid4} from "uuid"
 import parseMessages from "utils/parseMessages"
+import Axios from "axios";
 
 
 const UsersContext = createContext();
@@ -68,9 +69,19 @@ const UsersProvider = ({ children }) => {
 		_updateUserProp(userId, "unread", 0);
 	};
 
+	async function updateReadChat(body) {
+		try {
+			const res = await Axios.patch("chat-read", {...body})
+		}
+		catch (err){
+			console.error("Chat read error in backend")
+		}
+	}
+
 	const chatRead = (userId) => {
 		appDispatch({type: "setIChatRead", data: {chat_with_id: userId}})
 		socket.emit("chat_read", {reader: appState.user.id, chat_with: userId})
+		updateReadChat({reader: appState.user.id, chat_with: userId})
 	};
 
 	const addNewMessage2 = (userId, message) => {
@@ -88,6 +99,15 @@ const UsersProvider = ({ children }) => {
 
 		// socket.emit("fetch_response", { userId });
 	};
+
+	async function updateNewMessage(newMsgObject) {
+		try {
+			const res = await Axios.patch("new-message", {newMsgObject})
+		}
+		catch (err){
+			console.error("New message error in backend")
+		}
+	}
 
 	const addNewMessage = (chat_with_id, message) => {
 		// console.log(chat_with_id)
@@ -117,6 +137,7 @@ const UsersProvider = ({ children }) => {
 		appDispatch({type: "addMessage", data: {message: msgCopy, chat_with_id: chat_with_id}})
 
 		socket.emit("send_message", { newMsgObject, dfg: "chatId" });
+		updateNewMessage(newMsgObject)
 	};
 
 	function shg() {
@@ -158,7 +179,6 @@ const UsersProvider = ({ children }) => {
 			}
 		appDispatch({type: "addMessage", data: {message: {...message, sender:message.sender.id}, new_chat: newChatObject, chat_with_id: newChatObject.chat_with.id}})
 	}
-
 
 	useEffect(()=>{
 		socket.on('incoming_message', function(msg) {

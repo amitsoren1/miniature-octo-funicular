@@ -59,10 +59,13 @@ function ContextManager({children}) {
               draft.chats = [action.data.new_chat, ...draft.chats]
               return
             }
+
+            draft.chats = [draft.chats[chatIndex], ...draft.chats.filter(chat=>chat.chat_with.id!=Number(action.data.chat_with_id))]  // Move chat to top
             if(action.data.message.date in draft.chats[chatIndex].messages)
-			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
+  			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
 		        else
 			        draft.chats[chatIndex].messages[action.data.message.date] = [action.data.message]
+
             if(action.data.message.sender!==draft.user.id)
               draft.chats[chatIndex].unread+=1
             return
@@ -73,6 +76,8 @@ function ContextManager({children}) {
           case "setOChatRead":
             // console.log("BOOOOOOOOOOOOO")
             let chatIndex3 = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
+            if(chatIndex3===-1)
+              return
             Object.keys(draft.chats[chatIndex3].messages).forEach(date => {
                 for(var i=0;i<draft.chats[chatIndex3].messages[date].length;i++)
                   if(draft.chats[chatIndex3].messages[date][i].sender===draft.user.id)
