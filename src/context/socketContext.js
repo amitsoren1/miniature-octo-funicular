@@ -3,11 +3,10 @@ import io from "socket.io-client";
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
 
-const SOCKET_URL = window.location.origin.includes("localhost")
-	? "http://localhost:8000"
-	:"";
+const SOCKET_URL = process.env.REACT_APP_SOCKET_HOST || "http://localhost:8000"
 
 const socket = io.connect(SOCKET_URL);
+
 function asd(){}
 function asd2(){}
 // const socket = {on: asd, emit: asd2};
