@@ -15,6 +15,8 @@ function ContextManager({children}) {
         chats: [],
         contacts: [],
         unreadChatCount: 0,
+        out_call: null,
+        in_call: null
       }
 
       function appReducer(draft, action) {
@@ -86,6 +88,12 @@ function ContextManager({children}) {
             return
           case "loadApp":
             draft.appLoaded = true
+          case "callTo":
+            draft.out_call = action.data
+            return
+          case "callFrom":
+            draft.in_call = action.data
+            return
         }
       }
 

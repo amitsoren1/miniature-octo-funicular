@@ -188,6 +188,9 @@ const UsersProvider = ({ children }) => {
 		socket.on('chat_read', function(msg) {
 			appDispatch({type: "setOChatRead", data: {chat_with_id: msg["reader"]}})
 			})
+		socket.on('incoming_call', function(msg) {
+			appDispatch({type: "callFrom", data: msg})
+			})
 	}, [])
 
 	return (

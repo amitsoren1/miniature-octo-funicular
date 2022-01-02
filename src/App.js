@@ -10,6 +10,7 @@ import Sidebar from "components/Sidebar";
 import Chat from "pages/Chat";
 import Authentication from "pages/Authentication";
 import Axios from "axios"
+import VideoCall from "components/VideoCall";
 Axios.defaults.baseURL = process.env.REACT_APP_BACKEND_HOST || "http://127.0.0.1:8000"
 
 function App() {
@@ -44,6 +45,8 @@ function App() {
 		setStartLoadProgress(true);
 		setTimeout(() => setAppLoaded(true), 3000);
 	};
+	if(appState.in_call||appState.out_call)
+		return <VideoCall/>
 
 	if(!appState.loggedIn) return <Authentication />
 
