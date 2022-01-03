@@ -43,12 +43,14 @@
 
 .video__container .small_video__div {
     position: absolute;
-    background: yellow;
+    /* background: yellow; */
     color: aqua;
     height: 25%;
     width: 25%;
     /* margin-left: 20%; */
     /* margin-top: 20px; */
+    border-radius: 10px;
+    overflow: hidden;
     top: 70%;
     left: 20px;
     z-index: 2;
@@ -63,6 +65,8 @@
     width: 90%;
     /* margin-left: 20%; */
     /* margin-top: 20px; */
+    border-radius: 10px;
+    overflow: hidden;
     top: 5%;
     left: 35px;
     z-index: 1;
@@ -73,7 +77,9 @@
     height: 100%;
     /* height: fit-content; */
     width: 100%;
+    /* width: fit-content; */
     /* border-radius: 10px;     */
+    object-fit: cover;
 }
 
 .call__btn {
@@ -93,6 +99,11 @@
 .end__call {
     left: 45%;
     z-index: 2;
+    opacity: 0;
+}
+
+.video__container:hover .end__call {
+    opacity: 1;
 }
 
 .accept__call {

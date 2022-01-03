@@ -29,7 +29,6 @@ function VideoCall() {
 
 
 	const callUser = (id) => {
-		console.log(id, "fgtsdgfg")
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -69,10 +68,31 @@ function VideoCall() {
 				setStream(stream)
 					myVideo.current.srcObject = stream
 			})
-	
-			callUser(appState.out_call.id)
 		}
 	}, [])
+
+	useEffect(()=>{
+		if(stream)
+			if(iCalling)
+				callUser(appState.out_call.id)
+			else if(receivingCall&&callAccepted)
+				{
+					const peer = new Peer({
+						initiator: false,
+						trickle: false,
+						stream: stream
+					})
+					peer.on("signal", (data) => {
+						socket.emit("answer_call", { signal: data, to: caller.id })
+					})
+					peer.on("stream", (stream) => {
+						userVideo.current.srcObject = stream
+					})
+			
+					peer.signal(callerSignal)
+					connectionRef.current = peer
+				}
+	}, [stream])
 
 	useEffect(() => {
 		// navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
@@ -94,26 +114,26 @@ function VideoCall() {
 				myVideo.current.srcObject = stream
 		})
 		setCallAccepted(true)
-		const peer = new Peer({
-			initiator: false,
-			trickle: false,
-			stream: stream
-		})
-		peer.on("signal", (data) => {
-			socket.emit("answer_call", { signal: data, to: caller.id })
-		})
-		peer.on("stream", (stream) => {
-			userVideo.current.srcObject = stream
-		})
+		// const peer = new Peer({
+		// 	initiator: false,
+		// 	trickle: false,
+		// 	stream: stream
+		// })
+		// peer.on("signal", (data) => {
+		// 	socket.emit("answer_call", { signal: data, to: caller.id })
+		// })
+		// peer.on("stream", (stream) => {
+		// 	userVideo.current.srcObject = stream
+		// })
 
-		peer.signal(callerSignal)
-		connectionRef.current = peer
+		// peer.signal(callerSignal)
+		// connectionRef.current = peer
 	}
 
 	const leaveCall = () => {
-		if(appState.out_call)
+		if(iCalling)
 			socket.emit("call_ended", { to: appState.out_call.id })
-		if(appState.in_call)
+		if(receivingCall)
 			socket.emit("call_ended", { to: appState.in_call.from.id })
 		setCallEnded(true)
 	}
@@ -137,13 +157,6 @@ function VideoCall() {
 				appDispatch({type: "callFrom", data: null})
 			}
 	},[callEnded, callRejected])
-
-	useEffect(()=>{
-		if(callAccepted&&receivingCall)
-			{
-				
-			}
-	}, [callAccepted])
 
 	return(
         <div className="video__page">
@@ -170,7 +183,7 @@ function VideoCall() {
                 </div>}
 
 				<div className="big_video__div">
-                    <video playsInline muted autoPlay ref={userVideo} className="videoplayer"></video>
+                    <video playsInline autoPlay ref={userVideo} className="videoplayer"></video>
                 </div>
                 <div className="small_video__div">
                     <video playsInline muted autoPlay ref={myVideo} className="videoplayer"></video>
@@ -189,6 +202,10 @@ function VideoCall() {
 					<Icon id="endCallBtn" className="call__icon"/>
 				</div></>
 				}
+				{receivingCall&&callAccepted&&
+				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+                    <Icon id="endCallBtn" className="call__icon"/>
+                </div>}
 
 				{iCalling&&callAccepted&&
 				<div className="call__btn end__call" title="End call" onClick={leaveCall}>

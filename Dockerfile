@@ -1,16 +1,17 @@
-#get the latest alpine image from node registry
-FROM node:16.13.1-alpine
+FROM node:16-bullseye
 # AS build-stage
 
 EXPOSE 80
+RUN rm -rf /reactdataa
 
-#copy all the folder contents from local to container
-COPY . /frontsrc
-
-WORKDIR /frontsrc
-RUN npm install
-
+#VOLUME /reactdataa
+COPY ./files /reactdataa
+WORKDIR /reactdataa
+RUN npm install --save
 #create a react production build
+
+RUN ls -la
+RUN pwd
 RUN npm run build
 
 #get the latest alpine image from nginx registry
