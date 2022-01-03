@@ -1,6 +1,5 @@
 import "./styles/main.css"
 import Icon from "components/Icon"
-import video from "./assets/ongbak.mp4"
 import Peer from "simple-peer"
 import { useContext, useEffect, useRef, useState } from "react"
 import { Socket } from "socket.io-client"

@@ -88,6 +88,7 @@ function ContextManager({children}) {
             return
           case "loadApp":
             draft.appLoaded = true
+            return
           case "callTo":
             draft.out_call = action.data
             return
