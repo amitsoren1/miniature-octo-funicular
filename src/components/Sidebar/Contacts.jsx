@@ -2,8 +2,6 @@ import "./styles/main.css";
 import { useContext, useEffect, useState } from "react"
 import StateContext from "context/StateContext"
 import Icon from "components/Icon"
-import Alert from "./Alert"
-import OptionsBtn from "components/OptionsButton"
 import parseMessages from "utils/parseMessages";
 import Contact from "./Contact1"
 import Axios from "axios";
@@ -50,7 +48,7 @@ function Contacts({handleSlide}) {
             closeForm()
             setLoaded(true)
         } catch (error) {
-            console.log(error.response.data)
+            // console.log(error.response.data)
             if("phone" in error.response.data)
                 setPhoneerror(error.response.data.phone[0])
             if("name" in error.response.data)
@@ -75,6 +73,7 @@ function Contacts({handleSlide}) {
             if(newChat!=null)
                 appDispatch({type: "addChat", data: newChat})
         }
+    // eslint-disable-next-line
     }, [newContact, newChat, loaded])
 
     return <>

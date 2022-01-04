@@ -3,35 +3,9 @@ import io from "socket.io-client";
 import DispatchContext from "./DispatchContext";
 import StateContext from "./StateContext";
 
-const SOCKET_URL = "http://localhost:6565"
+const SOCKET_URL = process.env.REACT_APP_BACKEND_URL
 
 const socket = io.connect(SOCKET_URL);
-
-function asd(){}
-function asd2(){}
-// const socket = {on: asd, emit: asd2};
-// socket.on('connect', function(msg) {
-// 	// socket.emit('my_event', {data: 'I\'m connected!'});
-// 	console.log("connected")
-// 	console.log(msg)
-// 	// socket.emit("enter_room", {data: "hoooooohooooooo"})
-// });
-
-// socket.on('disconnect', function() {
-// 	console.log("disconnected")
-// });
-
-// socket.on('get_out', function(msg) {
-// 	console.log(msg)
-// });
-
-socket.on('hoodone', function(msg) {
-	console.log(msg)
-});
-
-// socket.on('incoming_message', function(msg) {
-// 	console.log("incoming  message")
-// 	})
 
 
 const SocketContext = createContext();
@@ -44,21 +18,22 @@ const SocketProvider = ({ children }) => {
 
 	useEffect(()=>{
 		socket.on('connect', function(msg) {
-		// socket.emit('my_event', {data: 'I\'m connected!'});
-			console.log("connected")
-			console.log(msg)
+			// console.log("connected")
+			// console.log(msg)
 			appDispatch({type: "connectedSocket"})
 			})
 
 		socket.on('disconnect', function(msg) {
-			console.log("disconnected")
+			// console.log("disconnected")
 			appDispatch({type: "disconnectedSocket"})
 			})
+	// eslint-disable-next-line
 	}, [])
 
 	useEffect(()=>{
 		if(appState.socketConnected && appState.appLoaded)
 			socket.emit("join", {id: appState.user.id})
+	// eslint-disable-next-line
 	}, [appState.appLoaded])
 
 	return (

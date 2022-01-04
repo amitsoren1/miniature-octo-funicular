@@ -14,7 +14,7 @@ function formatChats(chats1) {
 	return chats
 }
 
-const Loader = ({ done }) => {
+const Loader = () => {
 	const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
 	const [loadapp, setLoadapp] = useState(false)
@@ -75,17 +75,6 @@ const Loader = ({ done }) => {
 				appDispatch({type: "logout"})
 				return
 			}
-
-		// await Axios.all([req1, req2]).then(Axios.spread((res1, res2) => {
-		// 	// console.log("All DONE: ", res.headers)
-		// 	appDispatch({type: "setChats", data: formatChats(res1.data)})
-		// 	appDispatch({type: "updateUser", data: res2.data})
-		// 	appDispatch({type: "setContacts", data: res3.data})
-		// 	appDispatch({type: "loadApp"})
-		//   })).catch(Axios.spread((error1, error2) => {
-		// 	  console.error("An error occured on loading")
-		// 	  appDispatch({type: "logout"})
-		//   }))
 		}
 	if(!loadapp)
 		{
@@ -100,9 +89,7 @@ const Loader = ({ done }) => {
 			if(appState.socketConnected)
 				appDispatch({type: "loadApp"})
 		}
-	// return ()=>{
-	// 	appDispatch({type: "loadApp"})
-	// }
+	// eslint-disable-next-line
 	}, [loadapp, chats, profile, contacts, appState.socketConnected])
 
 	return (

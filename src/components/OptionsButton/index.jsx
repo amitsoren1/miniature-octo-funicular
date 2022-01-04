@@ -24,8 +24,8 @@ const OptionsBtn = ({
 			{
 				try {
 					const res = await Axios.post("/logout", {}, {headers: {"Authorization" : `Token ${appState.user.token}`}})
-					console.log(`Token ${appState.user.token}`)
-					console.log(res.status, res.data)
+					// console.log(`Token ${appState.user.token}`)
+					// console.log(res.status, res.data)
 				}
 				catch (error) {
 					console.error("An error occured while logging out")

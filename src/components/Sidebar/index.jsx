@@ -1,12 +1,10 @@
 import React, { useContext, useState } from "react";
 import "./styles/main.css";
-import avatar from "assets/images/profile-picture-girl-1.jpeg";
 import isEmpty from "utils/checker"
 import Icon from "components/Icon";
 import Alert from "./Alert";
 import Contact from "./Contact";
 import OptionsBtn from "components/OptionsButton";
-import { useUsersContext } from "context/usersContext";
 import StateContext from "context/StateContext";
 import Contacts from "./Contacts";
 import Profile from "./Profile";
@@ -33,7 +31,7 @@ const Sidebar = () => {
 		<aside className="sidebar">
 			<header className="header">
 				<div className="sidebar__avatar-wrapper" onClick={()=>setSprofile(true)}>
-					{appState.user.profile_picture&&<img src={appState.user.profile_picture} alt="profile picture" className="avatar" />}
+					{appState.user.profile_picture&&<img src={appState.user.profile_picture} className="avatar" alt="profile_picture"/>}
 					{!appState.user.profile_picture&&<Icon id="avatar" className="avatar"/>}
 				</div>
 				<div className="sidebar__actions">

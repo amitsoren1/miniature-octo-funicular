@@ -35,12 +35,14 @@ const Chat = ({ match, history }) => {
 			scrollToLastMsg();
 			setUserAsUnread(user.id);
 		}
+	// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
 		user && scrollToLastMsg();
 		if(user)
 			chatRead(user.chat_with.id)
+	// eslint-disable-next-line
 	}, [users]);
 
 	const openSidebar = (cb) => {

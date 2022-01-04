@@ -56,7 +56,7 @@ const Register = ({setLogin}) => {
               </div>
               <button>Sign Up</button>
               <p className="message">Already registered?
-                <a onClick={e=>setLogin(true)}> Sign In</a></p>
+                <a href="/#" onClick={e=>setLogin(true)}> Sign In</a></p>
             </form>
           </div>
         </div>
@@ -76,7 +76,7 @@ const Login = ({setLogin}) => {
         e.preventDefault()
         try {
           const response = await Axios.post("/login", {phone, password})
-          console.log(response.data)
+        //   console.log(response.data)
           appDispatch({type:"login", data: {token: response.data.key}})
         } catch (error) {
             console.error(error.response.data)
@@ -121,7 +121,7 @@ return(
                 {error&&<p className="error-message">{error}</p>}
                 <button onClick={handleSubmit}>login</button>
                 <p className="message">Not registered?
-                    <a onClick={e=>setLogin(false)}> Create an account</a></p>
+                    <a href="/#" onClick={e=>setLogin(false)}> Create an account</a></p>
             </form>
         </div>
     </div>

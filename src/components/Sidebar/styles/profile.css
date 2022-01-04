@@ -1,40 +1,5 @@
 @import url(profile-darktheme.css);
 
-.profile-pic__container {
-    height: 300px;
-    width: 300px;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-    background: black;
-    cursor: pointer;
-}
-
-.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-align: center;
-}
-
-.profile-pic__container:hover .overlay {
-    opacity: 0.8;
-}
-
-
-
-
-
 .contacts-header {
     padding-top: 15%;
     padding-bottom: 4%;

@@ -57,12 +57,12 @@ function ContextManager({children}) {
             return
           case "addMessage":
             let chatIndex = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
-            if(chatIndex==-1) {  // chat doesn't exist already so action.data.new_chat expected
+            if(chatIndex===-1) {  // chat doesn't exist already so action.data.new_chat expected
               draft.chats = [action.data.new_chat, ...draft.chats]
               return
             }
 
-            draft.chats = [draft.chats[chatIndex], ...draft.chats.filter(chat=>chat.chat_with.id!=Number(action.data.chat_with_id))]  // Move chat to top
+            draft.chats = [draft.chats[chatIndex], ...draft.chats.filter(chat=>chat.chat_with.id!==Number(action.data.chat_with_id))]  // Move chat to top
             if(action.data.message.date in draft.chats[chatIndex].messages)
   			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
 		        else
@@ -76,7 +76,6 @@ function ContextManager({children}) {
             draft.chats[chatIndex2].unread=0
             return
           case "setOChatRead":
-            // console.log("BOOOOOOOOOOOOO")
             let chatIndex3 = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
             if(chatIndex3===-1)
               return
@@ -94,6 +93,8 @@ function ContextManager({children}) {
             return
           case "callFrom":
             draft.in_call = action.data
+            return
+          default:
             return
         }
       }

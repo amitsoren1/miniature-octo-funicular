@@ -2,10 +2,6 @@ import "./styles/profile.css";
 import { useContext, useEffect, useRef, useState } from "react"
 import StateContext from "context/StateContext"
 import Icon from "components/Icon"
-import Alert from "./Alert"
-import OptionsBtn from "components/OptionsButton"
-import parseMessages from "utils/parseMessages";
-import Contact from "./Contact1"
 import Axios from "axios";
 import DispatchContext from "context/DispatchContext";
 
@@ -81,11 +77,6 @@ function Profile({handleSlide}) {
         }
     }
 
-    useEffect(()=>{
-        if(newPicRef.current)
-            console.log(newPicRef.current.files[0])
-    }, [name])
-
 return <>
     <div align="left" className="contacts-header">
         <div style={{display: "inline-block", paddingLeft:20, color:"#F6F6F6", cursor:"pointer" }}> <Icon id="back" onClick={handleSlide}/></div>
@@ -93,15 +84,6 @@ return <>
     </div>
     <div align="center">
 		<div className="sidebar-contact__content" style={{paddingTop: "20px"}}>
-			{/* <div className="profile-pic__container">
-                <img src="https://i.pinimg.com/736x/fd/6e/04/fd6e04548095d7f767917f344a904ff1.jpg" style={{height: "100%", width: "100%", objectFit: "contain", borderRadius: "50%"}}/>
-                <div className="overlay">
-                    <div className="content">
-                        <h3>Hi...</h3>
-                        <p>This whatsapp</p>
-                    </div>
-                </div>
-            </div> */}
             <div className="image" onClick={()=>setPicOptions(!picOptions)}>
                 {appState.user.profile_picture&&<img className="image__img" src={appState.user.profile_picture} alt="Bricks"/>}
                 {!appState.user.profile_picture&&<Icon id="avatar" className="image__img"/>}
@@ -167,7 +149,7 @@ return <>
         <span className="close-view" onClick={()=>setViewPic(false)}>&times;</span>
 
         {/* <!-- Modal Content (The Image) --> */}
-        <img className="modal-image" id="img01" src={appState.user.profile_picture}/>
+        <img className="modal-image" id="img01" src={appState.user.profile_picture} alt="big_profile_picture"/>
     </div>
     </>
 }
