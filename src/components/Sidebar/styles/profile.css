@@ -1,40 +1,5 @@
 @import url(profile-darktheme.css);
 
-.profile-pic__container {
-    height: 300px;
-    width: 300px;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-    background: black;
-    cursor: pointer;
-}
-
-.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    text-align: center;
-}
-
-.profile-pic__container:hover .overlay {
-    opacity: 0.8;
-}
-
-
-
-
-
 .contacts-header {
     padding-top: 15%;
     padding-bottom: 4%;
@@ -43,8 +8,9 @@
 
 .image {
     position: relative;
-    width: 47%;
-    height: 47%;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
     border-radius: 50%;
 }
 
@@ -53,11 +19,10 @@
 }
 
 .image__img {
-    display: block;
+    /* display: block; */
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
+    /* object-fit: contain; */
 }
 
 .image__overlay {
@@ -66,7 +31,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     /* background: rgba(0, 0, 0, 0.6); */
     color: #ffffff;
     font-family: 'Quicksand', sans-serif;
@@ -135,12 +100,12 @@
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 11; /* Sit on top */
-    padding-top: 10px; /* Location of the box */
+    padding-top: 30px; /* Location of the box */
     padding-bottom: 10px;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
     overflow: auto ; /* Enable scroll if needed */
     background-color: #20272b;
     opacity: 0.92;
@@ -150,8 +115,8 @@
   .modal-image {
     margin: auto;
     display: block;
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
     object-fit: contain;
   }
 

@@ -14,9 +14,9 @@ const emojiTabs = [
 ];
 
 const EmojiTray = ({ showEmojis, newMessage, setNewMessage }) => {
-	const addEmoji = (emoji) => {
-		setNewMessage(newMessage + emoji);
-	};
+	// const addEmoji = (emoji) => {
+	// 	setNewMessage(newMessage + emoji);
+	// };
 
 	return (
 		<div

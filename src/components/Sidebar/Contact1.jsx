@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Icon from "components/Icon";
 import { Link } from "react-router-dom";
-import formatTime from "utils/formatTime";
 import { useUsersContext } from "context/usersContext";
 import StateContext from "context/StateContext";
 
@@ -10,22 +9,7 @@ import StateContext from "context/StateContext";
 const Contact = ({ contact }) => {
 	const appState = useContext(StateContext)
 	const { setUserAsUnread } = useUsersContext();
-	const getLastMessage = () => {
-		const messageDates = Object.keys(contact.messages);
-		const recentMessageDate = messageDates[messageDates.length - 1];
-		// console.log(contact.messages[recentMessageDate])
-		const messages = [...contact.messages[recentMessageDate]];
-		const lastMessage = messages.pop();
-		return lastMessage;
-	};
 
-	// const lastMessage = getLastMessage(contact);
-	// const lastMessage = {
-	// 		content: "mrshujbkjbhkj",
-	// 		sender: 1,
-	// 		time: "08:11:26",
-	// 		status: null,
-	// 	}
 	let chat = appState.chats.filter((chat) => chat.chat_with.id === Number(contact.profile.id))[0]
 
 	return (

@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { SocketProvider, useSocketContext } from "context/SocketContext";
 import { UsersProvider } from "context/usersContext";
 import StateContext from "context/StateContext";
 import Loader from "./components/Loader";
@@ -10,13 +9,11 @@ import Sidebar from "components/Sidebar";
 import Chat from "pages/Chat";
 import Authentication from "pages/Authentication";
 import Axios from "axios"
-Axios.defaults.baseURL = "http://127.0.0.1:8000"
+import VideoCall from "components/VideoCall";
+Axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
 
 function App() {
-	const socket = useSocketContext()
 	const appState = useContext(StateContext)
-	const [appLoaded, setAppLoaded] = useState(false);
-	const [startLoadProgress, setStartLoadProgress] = useState(false);
 
 	const onSelectMode = () => {
 		const userPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -32,7 +29,6 @@ function App() {
 	  
 		// Setup dark/light mode for the first time
 		onSelectMode()
-		stopLoad();
 		// Remove listener
 		return () => {
 		  window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', () => {
@@ -40,14 +36,12 @@ function App() {
 		}
 	  }, []);
 
-	const stopLoad = () => {
-		setStartLoadProgress(true);
-		setTimeout(() => setAppLoaded(true), 3000);
-	};
+	if(appState.in_call||appState.out_call)
+		return <VideoCall/>
 
 	if(!appState.loggedIn) return <Authentication />
 
-	if (!appState.appLoaded || !appState.socketConnected) return <Loader done={startLoadProgress} />;
+	if (!appState.appLoaded || !appState.socketConnected) return <Loader/>;
 
 	return (
 		<UsersProvider>

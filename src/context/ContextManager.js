@@ -15,6 +15,8 @@ function ContextManager({children}) {
         chats: [],
         contacts: [],
         unreadChatCount: 0,
+        out_call: null,
+        in_call: null
       }
 
       function appReducer(draft, action) {
@@ -55,14 +57,17 @@ function ContextManager({children}) {
             return
           case "addMessage":
             let chatIndex = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
-            if(chatIndex==-1) {  // chat doesn't exist already so action.data.new_chat expected
+            if(chatIndex===-1) {  // chat doesn't exist already so action.data.new_chat expected
               draft.chats = [action.data.new_chat, ...draft.chats]
               return
             }
+
+            draft.chats = [draft.chats[chatIndex], ...draft.chats.filter(chat=>chat.chat_with.id!==Number(action.data.chat_with_id))]  // Move chat to top
             if(action.data.message.date in draft.chats[chatIndex].messages)
-			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
+  			        draft.chats[chatIndex].messages[action.data.message.date].push(action.data.message)
 		        else
 			        draft.chats[chatIndex].messages[action.data.message.date] = [action.data.message]
+
             if(action.data.message.sender!==draft.user.id)
               draft.chats[chatIndex].unread+=1
             return
@@ -71,8 +76,9 @@ function ContextManager({children}) {
             draft.chats[chatIndex2].unread=0
             return
           case "setOChatRead":
-            // console.log("BOOOOOOOOOOOOO")
             let chatIndex3 = draft.chats.findIndex((chat) => chat.chat_with.id === Number(action.data.chat_with_id))
+            if(chatIndex3===-1)
+              return
             Object.keys(draft.chats[chatIndex3].messages).forEach(date => {
                 for(var i=0;i<draft.chats[chatIndex3].messages[date].length;i++)
                   if(draft.chats[chatIndex3].messages[date][i].sender===draft.user.id)
@@ -81,6 +87,15 @@ function ContextManager({children}) {
             return
           case "loadApp":
             draft.appLoaded = true
+            return
+          case "callTo":
+            draft.out_call = action.data
+            return
+          case "callFrom":
+            draft.in_call = action.data
+            return
+          default:
+            return
         }
       }
 

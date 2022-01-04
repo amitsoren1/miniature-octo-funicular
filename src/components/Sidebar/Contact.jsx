@@ -9,7 +9,7 @@ import StateContext from "context/StateContext";
 
 const Contact = ({ contact }) => {
 	const appState = useContext(StateContext)
-	const { setUserAsUnread, chatRead } = useUsersContext();
+	const { chatRead } = useUsersContext();
 	const getLastMessage = () => {
 		const messageDates = Object.keys(contact.messages);
 		const recentMessageDate = messageDates[messageDates.length - 1];
