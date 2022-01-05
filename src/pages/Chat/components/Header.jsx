@@ -8,8 +8,11 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 	const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
 	let contact = appState.contacts.filter((contact) => contact.profile.id === user.chat_with.id)[0];
-	function callUser() {
-		appDispatch({type: "callTo", data: {id: user.chat_with.id}})
+	function makeVideoCall() {
+		appDispatch({type: "callTo", data: {id: user.chat_with.id, call_type: "video"}})
+	}
+	function makeAudioCall() {
+		appDispatch({type: "callTo", data: {id: user.chat_with.id, call_type: "audio"}})
 	}
 
 	return (
@@ -29,10 +32,20 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 				<button
 					className="chat__action"
 					aria-label="Search"
-					onClick={callUser}
+					onClick={makeVideoCall}
 				>
 					<Icon
 						id="videoCall"
+						className="chat__action-icon chat__action-icon--search"
+					/>
+				</button>
+				<button
+					className="chat__action"
+					aria-label="Search"
+					onClick={makeAudioCall}
+				>
+					<Icon
+						id="audioCall"
 						className="chat__action-icon chat__action-icon--search"
 					/>
 				</button>

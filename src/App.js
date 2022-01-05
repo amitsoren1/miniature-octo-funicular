@@ -10,6 +10,7 @@ import Chat from "pages/Chat";
 import Authentication from "pages/Authentication";
 import Axios from "axios"
 import VideoCall from "components/VideoCall";
+import AudioCall from "components/AudioCall";
 Axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL
 
 function App() {
@@ -36,8 +37,10 @@ function App() {
 		}
 	  }, []);
 
-	if(appState.in_call||appState.out_call)
+	if((appState.in_call && appState.in_call.call_type==="video") || (appState.out_call && appState.out_call.call_type==="video"))
 		return <VideoCall/>
+	if((appState.in_call && appState.in_call.call_type==="audio") || (appState.out_call && appState.out_call.call_type==="audio"))
+		return <AudioCall/>
 
 	if(!appState.loggedIn) return <Authentication />
 

@@ -1,0 +1,8 @@
+.video__container .timepassed {
+    position: absolute;
+    width: 100%;
+    top: 65%;
+    text-align: center;
+    z-index: 2;
+    color: rgb(141, 35, 35);
+}

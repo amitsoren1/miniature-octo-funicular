@@ -1,36 +1,39 @@
 import React from "react";
-import groupAvatar from "assets/images/women.png";
+// import groupAvatar from "assets/images/women.png";
 import media from "assets/images/placeholder.jpeg";
 import Checkbox from "components/Checkbox";
 import Icon from "components/Icon";
 
-const groups = [
-	{
-		name: "Group 1",
-		avatar: groupAvatar,
-		members:
-			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
-	},
-	{
-		name: "Group 2",
-		avatar: groupAvatar,
-		members:
-			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
-	},
-	{
-		name: "Group 3",
-		avatar: groupAvatar,
-		members:
-			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
-	},
-];
+// const groups = [
+// 	{
+// 		name: "Group 1",
+// 		avatar: groupAvatar,
+// 		members:
+// 			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
+// 	},
+// 	{
+// 		name: "Group 2",
+// 		avatar: groupAvatar,
+// 		members:
+// 			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
+// 	},
+// 	{
+// 		name: "Group 3",
+// 		avatar: groupAvatar,
+// 		members:
+// 			"Michelle Obama, Sandra Bullock, Kerry Washington, Beyonce Knowles, Kamala Harris, You",
+// 	},
+// ];
+
+const groups = []
 
 const Profile = ({ user }) => {
 	return (
 		<div className="profile">
 			<div className="profile__section profile__section--personal">
 				<div className="profile__avatar-wrapper">
-					<img src={user.profile_picture} alt={user.name} className="avatar" />
+					{user.profile_picture&&<img src={user.profile_picture} alt={user.name} className="avatar" />}
+					{!user.profile_picture&&<Icon id="avatar" className="avatar" />}
 				</div>
 				<h2 className="profile__name"> {user.name} </h2>
 			</div>
@@ -91,16 +94,16 @@ const Profile = ({ user }) => {
 				</div>
 				<ul>
 					<li className="profile__about-item">
-						Out here saving the world, one block of code at a time.
+						{user.whatsapp_status}
 					</li>
-					<li className="profile__about-item">+23423456789</li>
+					<li className="profile__about-item">+91 {user.phone}</li>
 				</ul>
 			</div>
 
 			<div className="profile__section profile__section--groups">
 				<div className="profile__heading-wrapper">
 					<h2 className="sb profile__heading profile__group-heading">
-						<span> Groups in common </span> <span> 3</span>
+						<span> Groups in common </span> <span> 0</span>
 					</h2>
 				</div>
 				{groups.map((group) => (

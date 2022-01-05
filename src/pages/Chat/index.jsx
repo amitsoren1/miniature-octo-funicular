@@ -118,7 +118,7 @@ const Chat = ({ match, history }) => {
 				active={showProfileSidebar}
 				closeSidebar={() => setShowProfileSidebar(false)}
 			>
-				<Profile user={user} />
+				<Profile user={{...user.chat_with, phone: user.phone}} />
 			</ChatSidebar>
 		</div>
 	);

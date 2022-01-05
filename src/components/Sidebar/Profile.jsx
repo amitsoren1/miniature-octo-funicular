@@ -1,5 +1,5 @@
 import "./styles/profile.css";
-import { useContext, useEffect, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import StateContext from "context/StateContext"
 import Icon from "components/Icon"
 import Axios from "axios";

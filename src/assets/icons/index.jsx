@@ -780,6 +780,22 @@ const icons = {
 			</svg>
 
 	),
+	audioCall: (props) => (
+		<svg
+			version="1.0"
+			xmlns="http://www.w3.org/2000/svg"
+			width="24.000000pt"
+			height="24.000000pt"
+			viewBox="0 0 24.000000 24.000000"
+			preserveAspectRatio="xMidYMid meet"
+			{...props}>
+
+			<g transform="translate(0.000000,24.000000) scale(0.100000,-0.100000)"
+				fill="currentColor" stroke="none">
+			<path d="M34 196 c-10 -27 16 -84 55 -119 60 -54 129 -60 119 -11 -4 22 -43 31 -63 14 -29 -24 -89 36 -65 65 19 22 8 60 -18 63 -13 2 -24 -3 -28 -12z"/>
+			</g>
+		</svg>
+	),
 };
 
 // name: (props) => (),

@@ -26,11 +26,13 @@ const SocketProvider = ({ children }) => {
 			console.log("disconnected")
 			appDispatch({type: "disconnectedSocket"})
 			})
+	// eslint-disable-next-line
 	}, [])
 
 	useEffect(()=>{
 		if(appState.socketConnected && appState.appLoaded)
 			socket.emit("join", {id: appState.user.id})
+	// eslint-disable-next-line
 	}, [appState.appLoaded])
 
 	return (

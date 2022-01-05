@@ -23,7 +23,7 @@ const OptionsBtn = ({
 		if(option==="Log out")
 			{
 				try {
-					const res = await Axios.post("/logout", {}, {headers: {"Authorization" : `Token ${appState.user.token}`}})
+					await Axios.post("/logout", {}, {headers: {"Authorization" : `Token ${appState.user.token}`}})
 					// console.log(`Token ${appState.user.token}`)
 					// console.log(res.status, res.data)
 				}

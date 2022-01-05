@@ -7,7 +7,7 @@ import StateContext from "context/StateContext"
 import DispatchContext from "context/DispatchContext"
 
 
-function VideoCall() {
+function AudioCall() {
     const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
     const socket = useSocketContext()
@@ -20,12 +20,14 @@ function VideoCall() {
 	const [ iCalling, setICalling ] = useState(false)
 	const [ callEnded, setCallEnded] = useState(false)
 	const [ callRejected, setCallRejected] = useState(false)
+	const [ minutes, setMinutes] = useState(0)
+	const [ counting, setCounting] = useState(false)
 	const myVideo = useRef()
 	const userVideo = useRef()
 	const connectionRef= useRef()
 
 
-	const callUser = (id, call_type) => {
+	const callUser = (id) => {
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -35,8 +37,8 @@ function VideoCall() {
 			socket.emit("call_user", {
 				user_to_call: id,
 				signal_data: data,
-				call_type: call_type,
 				from: appState.user,
+				call_type: "audio"
 			})
 		})
 		peer.on("stream", (stream) => {
@@ -62,7 +64,7 @@ function VideoCall() {
 			let chat = appState.chats.filter((chat) => chat.chat_with.id === Number(appState.out_call.id))[0];
 			setUserToCall({...chat.chat_with, phone: chat.phone})
 			setICalling(true)
-			navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+			navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
 				setStream(stream)
 					myVideo.current.srcObject = stream
 			})
@@ -73,7 +75,7 @@ function VideoCall() {
 	useEffect(()=>{
 		if(stream)
 			if(iCalling)
-				callUser(appState.out_call.id, appState.out_call.call_type)
+				callUser(appState.out_call.id)
 			else if(receivingCall&&callAccepted)
 				{
 					const peer = new Peer({
@@ -94,8 +96,18 @@ function VideoCall() {
 	// eslint-disable-next-line
 	}, [stream])
 
+	useEffect(() => {
+		if(callAccepted&&!counting)
+			{
+				setMinutes(0)
+				setCounting(true)
+			}
+		const timer = setTimeout(() => setMinutes(minutes + 1), 1000)
+		return () => clearTimeout(timer)
+	  }, [callAccepted, minutes, counting])
+
 	const answerCall =() =>  {
-		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+		navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
 			setStream(stream)
 				myVideo.current.srcObject = stream
 		})
@@ -137,7 +149,7 @@ function VideoCall() {
                 {iCalling&&!callAccepted&&
 				<div className="incomingcall">
                     <div className="profile_pic__wrapper">
-                        {userToCall.profile_picture&&<img src={userToCall.profile_picture} alt="" className="profpic"/>}
+                        {userToCall.profile_picture&&<img src={userToCall.profile_picture} alt="Me" className="profpic"/>}
                         {!userToCall.profile_picture&&<Icon id="avatar" className="profpic"/>}
                     </div>
 						<h1>
@@ -148,19 +160,39 @@ function VideoCall() {
 				{receivingCall&&!callAccepted&&
 				<div className="incomingcall">
                     <div className="profile_pic__wrapper">
-                        <img src={caller.profile_picture} alt="" className="profpic"/>
+                        <img src={caller.profile_picture} alt="caller" className="profpic"/>
                     </div>
 						<h1>
 							Call from +91 {caller.phone}
 						</h1>
                 </div>}
 
+				<video playsInline autoPlay hidden ref={userVideo} className="videoplayer"></video>
+				<video playsInline muted autoPlay hidden ref={myVideo}></video>
+
+				{receivingCall&&callAccepted&&<>
 				<div className="big_video__div">
-                    <video playsInline autoPlay ref={userVideo} className="videoplayer"></video>
+					{caller.profile_picture&&<img src={caller.profile_picture} alt="caller" className="videoplayer" />}
+					{!caller.profile_picture&&<Icon id="avatar" className="videoplayer"/>}
                 </div>
                 <div className="small_video__div">
-                    <video playsInline muted autoPlay ref={myVideo} className="videoplayer"></video>
+					{appState.user.profile_picture&&<img src={appState.user.profile_picture} alt="Me" className="videoplayer" />}
+					{!appState.user.profile_picture&&<Icon id="avatar" className="videoplayer"/>}
                 </div>
+				</>}
+				{iCalling&&callAccepted&&<>
+				<div className="big_video__div">
+					{userToCall.profile_picture&&<img src={userToCall.profile_picture} alt="usertocall" className="videoplayer" />}
+					{!userToCall.profile_picture&&<Icon id="avatar" className="videoplayer"/>}
+                </div>
+                <div className="small_video__div">
+					{appState.user.profile_picture&&<img src={appState.user.profile_picture} alt="Me" className="videoplayer" />}
+					{!appState.user.profile_picture&&<Icon id="avatar" className="videoplayer"/>}
+                </div>
+				</>
+				}
+
+				{callAccepted&&<h1 className="timepassed">00:{minutes}</h1>}
 
                 {iCalling&&!callAccepted&&
 				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
@@ -189,4 +221,4 @@ function VideoCall() {
     )
 }
 
-export default VideoCall
+export default AudioCall
