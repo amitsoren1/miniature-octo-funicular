@@ -160,7 +160,8 @@ function AudioCall() {
 				{receivingCall&&!callAccepted&&
 				<div className="incomingcall">
                     <div className="profile_pic__wrapper">
-                        <img src={caller.profile_picture} alt="caller" className="profpic"/>
+						{caller.profile_picture&&<img src={caller.profile_picture} alt="caller" className="profpic"/>}
+                        {!caller.profile_picture&&<Icon id="avatar" className="profpic"/>}
                     </div>
 						<h1>
 							Call from +91 {caller.phone}
