@@ -28,17 +28,13 @@ function ContextManager({children}) {
             draft.socketConnected = false
             return
           case "login":
-            draft.loggedIn = Boolean(localStorage.getItem("appToken"))
             draft.user.token = action.data.token
             localStorage.setItem("appToken", action.data.token)
+            draft.loggedIn = Boolean(localStorage.getItem("appToken"))
             return
           case "logout":
-            draft.chats = initialState.chats
-            draft.loggedIn = false
-            draft.user = initialState.user
-            draft.appLoaded = initialState.appLoaded
             localStorage.removeItem("appToken")
-            return
+            return initialState
           case "updateUser":
             draft.user = {...draft.user, ...action.data}
             return

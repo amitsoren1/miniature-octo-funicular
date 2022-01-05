@@ -37,14 +37,14 @@ function App() {
 		}
 	  }, []);
 
+
+	if(!appState.loggedIn) return <Authentication />
+	if(!appState.appLoaded || !appState.socketConnected) return <Loader/>;
+
 	if((appState.in_call && appState.in_call.call_type==="video") || (appState.out_call && appState.out_call.call_type==="video"))
 		return <VideoCall/>
 	if((appState.in_call && appState.in_call.call_type==="audio") || (appState.out_call && appState.out_call.call_type==="audio"))
 		return <AudioCall/>
-
-	if(!appState.loggedIn) return <Authentication />
-
-	if (!appState.appLoaded || !appState.socketConnected) return <Loader/>;
 
 	return (
 		<UsersProvider>
