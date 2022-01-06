@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import contacts from "data/contacts";
 import { useSocketContext } from "./SocketContext";
 import StateContext from "./StateContext";
@@ -6,7 +6,8 @@ import DispatchContext from "./DispatchContext";
 import {v4 as uuid4} from "uuid"
 import parseMessages from "utils/parseMessages"
 import Axios from "axios";
-
+import messageTune from "./message.mp3"
+import callTune from "./call.mp3"
 
 const UsersContext = createContext();
 
@@ -17,6 +18,9 @@ const UsersProvider = ({ children }) => {
 	const appDispatch = useContext(DispatchContext)
 	// const [newChat, setnewChat] = useState(null)
 	const socket = useSocketContext();
+	const messageAudio = new Audio(messageTune)
+	const callAudioRef = useRef()
+	messageAudio.hidden = true
 
 	const [users, setUsers] = useState(contacts);
 
@@ -51,7 +55,7 @@ const UsersProvider = ({ children }) => {
 
 	async function updateNewMessage(newMsgObject) {
 		try {
-			await Axios.patch("new-message", {newMsgObject})
+			await Axios.post("new-message", {newMsgObject})
 		}
 		catch (err){
 			console.error("New message error in backend")
@@ -91,22 +95,39 @@ const UsersProvider = ({ children }) => {
 		appDispatch({type: "addMessage", data: {message: {...message, sender:message.sender.id}, new_chat: newChatObject, chat_with_id: newChatObject.chat_with.id}})
 	}
 
+	function handleMessageTune() {
+		messageAudio.currentTime = 0
+		messageAudio.play()
+	}
+
+	function handleCallTune() {
+		callAudioRef.current.currentTime = 0
+		callAudioRef.current.play()
+	}
+
+	function stopCallRing() {
+		callAudioRef.current.pause()
+	}
+
 	useEffect(()=>{
 		socket.on('incoming_message', function(msg) {
 			// console.log("incoming  message")
+			handleMessageTune()
 			handleIncomingMessage(msg)
 			})
 		socket.on('chat_read', function(msg) {
 			appDispatch({type: "setOChatRead", data: {chat_with_id: msg["reader"]}})
 			})
 		socket.on('incoming_call', function(msg) {
+			handleCallTune()
 			appDispatch({type: "callFrom", data: msg})
 			})
 	// eslint-disable-next-line
 	}, [])
 
 	return (
-		<UsersContext.Provider value={{ users, setUserAsUnread, addNewMessage, chatRead }}>
+		<UsersContext.Provider value={{ users, setUserAsUnread, addNewMessage, chatRead, stopCallRing }}>
+			<audio hidden src={callTune} ref={callAudioRef}></audio>
 			{children}
 		</UsersContext.Provider>
 	);

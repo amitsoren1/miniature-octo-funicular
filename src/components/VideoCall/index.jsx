@@ -5,12 +5,14 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useSocketContext } from "context/SocketContext"
 import StateContext from "context/StateContext"
 import DispatchContext from "context/DispatchContext"
+import { useUsersContext } from "context/usersContext"
 
 
 function VideoCall() {
     const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
     const socket = useSocketContext()
+	const { stopCallRing } = useUsersContext()
 	const [ stream, setStream ] = useState()
 	const [ receivingCall, setReceivingCall ] = useState(false)
 	const [ caller, setCaller ] = useState()
@@ -76,6 +78,7 @@ function VideoCall() {
 				callUser(appState.out_call.id, appState.out_call.call_type)
 			else if(receivingCall&&callAccepted)
 				{
+					stopCallRing()
 					const peer = new Peer({
 						initiator: false,
 						trickle: false,
@@ -111,6 +114,7 @@ function VideoCall() {
 	}
 
 	const rejectCall = () => {
+		stopCallRing()
 		socket.emit("call_rejected", { to: appState.in_call.from.id })
 		setCallRejected(true)
 	}

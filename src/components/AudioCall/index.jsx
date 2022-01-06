@@ -5,12 +5,14 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { useSocketContext } from "context/SocketContext"
 import StateContext from "context/StateContext"
 import DispatchContext from "context/DispatchContext"
+import { useUsersContext } from "context/usersContext"
 
 
 function AudioCall() {
     const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
     const socket = useSocketContext()
+	const { stopCallRing } = useUsersContext()
 	const [ stream, setStream ] = useState()
 	const [ receivingCall, setReceivingCall ] = useState(false)
 	const [ caller, setCaller ] = useState()
@@ -78,6 +80,7 @@ function AudioCall() {
 				callUser(appState.out_call.id)
 			else if(receivingCall&&callAccepted)
 				{
+					stopCallRing()
 					const peer = new Peer({
 						initiator: false,
 						trickle: false,
@@ -123,6 +126,7 @@ function AudioCall() {
 	}
 
 	const rejectCall = () => {
+		stopCallRing()
 		socket.emit("call_rejected", { to: appState.in_call.from.id })
 		setCallRejected(true)
 	}

@@ -42,9 +42,13 @@ function App() {
 	if(!appState.appLoaded || !appState.socketConnected) return <Loader/>;
 
 	if((appState.in_call && appState.in_call.call_type==="video") || (appState.out_call && appState.out_call.call_type==="video"))
-		return <VideoCall/>
+		return 	<UsersProvider>
+					<VideoCall/>
+				</UsersProvider>
 	if((appState.in_call && appState.in_call.call_type==="audio") || (appState.out_call && appState.out_call.call_type==="audio"))
-		return <AudioCall/>
+		return <UsersProvider>
+					<AudioCall/>
+				</UsersProvider>
 
 	return (
 		<UsersProvider>

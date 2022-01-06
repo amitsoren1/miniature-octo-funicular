@@ -40,7 +40,7 @@ const Chat = ({ match, history }) => {
 
 	useEffect(() => {
 		user && scrollToLastMsg();
-		if(user)
+		if(user&&user.unread>0)
 			chatRead(user.chat_with.id)
 	// eslint-disable-next-line
 	}, [users]);
