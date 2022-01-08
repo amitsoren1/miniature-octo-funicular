@@ -23,6 +23,7 @@ function AudioCall() {
 	const [ callEnded, setCallEnded] = useState(false)
 	const [ callRejected, setCallRejected] = useState(false)
 	const [ minutes, setMinutes] = useState(0)
+	const [ seconds, setSeconds] = useState(0)
 	const [ counting, setCounting] = useState(false)
 	const myVideo = useRef()
 	const userVideo = useRef()
@@ -102,12 +103,21 @@ function AudioCall() {
 	useEffect(() => {
 		if(callAccepted&&!counting)
 			{
-				setMinutes(0)
+				setSeconds(0)
 				setCounting(true)
 			}
-		const timer = setTimeout(() => setMinutes(minutes + 1), 1000)
+		const timer = setTimeout(() => {
+			if(seconds===59)
+				{
+					setSeconds(0)
+					setMinutes(minutes + 1)
+				}
+			else {
+				setSeconds(seconds+1)
+			}
+		}, 1000)
 		return () => clearTimeout(timer)
-	  }, [callAccepted, minutes, counting])
+	  }, [callAccepted, minutes, seconds, counting])
 
 	const answerCall =() =>  {
 		navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then((stream) => {
@@ -197,30 +207,32 @@ function AudioCall() {
 				</>
 				}
 
-				{callAccepted&&<h1 className="timepassed">00:{minutes}</h1>}
+				{callAccepted&&<h1 className="timepassed">{minutes%10===minutes?`0${minutes}`:minutes}:{seconds%10===seconds?`0${seconds}`:seconds}</h1>}
 
-                {iCalling&&!callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
+				<div className="btn-flexbox__container">
+					{iCalling&&!callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
 
-				{receivingCall&&!callAccepted&&<>
-				<div className="call__btn accept__call" title="Accept call">
-					<Icon id="acceptCallBtn" className="call__icon" onClick={answerCall}/>
+					{receivingCall&&!callAccepted&&<>
+					<div className="call__btn accept__call" title="Accept call">
+						<Icon id="acceptCallBtn" className="call__icon" onClick={answerCall}/>
+					</div>
+					<div className="call__btn reject__call" title="Reject call" onClick={rejectCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div></>
+					}
+					{receivingCall&&callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
+
+					{iCalling&&callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
 				</div>
-				<div className="call__btn reject__call" title="Reject call" onClick={rejectCall}>
-					<Icon id="endCallBtn" className="call__icon"/>
-				</div></>
-				}
-				{receivingCall&&callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
-
-				{iCalling&&callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
             </div>
         </div>
     )

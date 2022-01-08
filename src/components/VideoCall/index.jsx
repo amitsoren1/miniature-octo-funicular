@@ -64,7 +64,11 @@ function VideoCall() {
 			let chat = appState.chats.filter((chat) => chat.chat_with.id === Number(appState.out_call.id))[0];
 			setUserToCall({...chat.chat_with, phone: chat.phone})
 			setICalling(true)
-			navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+			navigator.mediaDevices.getUserMedia({ video: true, audio:  {
+				sampleRate: 48000,
+				volume: 1.5,
+				echoCancellation: true
+			} }).then((stream) => {
 				setStream(stream)
 					myVideo.current.srcObject = stream
 			})
@@ -98,7 +102,12 @@ function VideoCall() {
 	}, [stream])
 
 	const answerCall =() =>  {
-		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+		navigator.mediaDevices.getUserMedia({ video: true, audio:  {
+			sampleRate: 48000,
+			channelCount: 1,
+			volume: 1.5,
+			echoCancellation: true
+		} }).then((stream) => {
 			setStream(stream)
 				myVideo.current.srcObject = stream
 		})
@@ -167,28 +176,31 @@ function VideoCall() {
                     <video playsInline muted autoPlay ref={myVideo} className="videoplayer"></video>
                 </div>
 
-                {iCalling&&!callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
+				<div className="btn-flexbox__container">
+					{iCalling&&!callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
 
-				{receivingCall&&!callAccepted&&<>
-				<div className="call__btn accept__call" title="Accept call">
-					<Icon id="acceptCallBtn" className="call__icon" onClick={answerCall}/>
+					{receivingCall&&!callAccepted&&<>
+					<div className="call__btn accept__call" title="Accept call">
+						<Icon id="acceptCallBtn" className="call__icon" onClick={answerCall}/>
+					</div>
+					<div className="call__btn reject__call" title="Reject call" onClick={rejectCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div></>
+					}
+					{receivingCall&&callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
+
+					{iCalling&&callAccepted&&
+					<div className="call__btn end__call" title="End call" onClick={leaveCall}>
+						<Icon id="endCallBtn" className="call__icon"/>
+					</div>}
 				</div>
-				<div className="call__btn reject__call" title="Reject call" onClick={rejectCall}>
-					<Icon id="endCallBtn" className="call__icon"/>
-				</div></>
-				}
-				{receivingCall&&callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
 
-				{iCalling&&callAccepted&&
-				<div className="call__btn end__call" title="End call" onClick={leaveCall}>
-                    <Icon id="endCallBtn" className="call__icon"/>
-                </div>}
             </div>
         </div>
     )
