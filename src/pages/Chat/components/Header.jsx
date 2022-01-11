@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Icon from "components/Icon";
 import OptionsBtn from "components/OptionsButton";
 import StateContext from "context/StateContext";
 import DispatchContext from "context/DispatchContext";
+import { useSocketContext } from "context/SocketContext";
 
 const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
+	const [userStatus, setUserStatus] = useState()
+	const socket = useSocketContext()
 	const appState = useContext(StateContext)
 	const appDispatch = useContext(DispatchContext)
 	let contact = appState.contacts.filter((contact) => contact.profile.id === user.chat_with.id)[0];
@@ -14,6 +17,24 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 	function makeAudioCall() {
 		appDispatch({type: "callTo", data: {id: user.chat_with.id, call_type: "audio"}})
 	}
+
+	useEffect(()=>{
+		socket.emit("get_user_status", {"status_of": user.chat_with.id}) //call only once
+
+		socket.on("user_status", (msg)=>{
+			setUserStatus(msg.status_result)
+		})
+
+		socket.on("went_offline", (msg)=>{
+			if(msg.user_id === user.chat_with.id)
+				setUserStatus("last seen " + msg.last_seen)
+		})
+
+		socket.on("went_online", (msg)=>{
+			if(msg.user_id === user.chat_with.id)
+				setUserStatus("online")
+		})
+	}, [])
 
 	return (
 		<header className="header chat__header">
@@ -25,7 +46,7 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 			<div className="chat__contact-wrapper" onClick={openProfileSidebar}>
 				<h2 className="chat__contact-name"> {contact?contact.name:`+91 ${user.phone}`}</h2>
 				<p className="chat__contact-desc">
-					{user.typing ? "typing..." : "online"}
+					{user.typing ? "typing..." : userStatus}
 				</p>
 			</div>
 			<div className="chat__actions">

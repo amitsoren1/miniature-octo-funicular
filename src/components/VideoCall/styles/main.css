@@ -19,7 +19,7 @@
     background: linear-gradient(#200122, #6f0000);
     z-index: 1;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     flex-direction: column;
     align-items: center;
 }
