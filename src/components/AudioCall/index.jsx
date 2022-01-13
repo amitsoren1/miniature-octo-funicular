@@ -21,7 +21,8 @@ function AudioCall() {
 	const [ userToCall, setUserToCall ] = useState()
 	const [ iCalling, setICalling ] = useState(false)
 	const [ callEnded, setCallEnded] = useState(false)
-	const [ callRejected, setCallRejected] = useState(false)
+	const [ myCallRejected, setMyCallRejected] = useState(false)
+	const [ iRejectedCall, setIRejectedCall] = useState(false)
 	const [ minutes, setMinutes] = useState(0)
 	const [ seconds, setSeconds] = useState(0)
 	const [ counting, setCounting] = useState(false)
@@ -128,8 +129,10 @@ function AudioCall() {
 	}
 
 	const leaveCall = () => {
-		if(iCalling)
+		if(iCalling&&callAccepted)
 			socket.emit("call_ended", { to: appState.out_call.id })
+		if(iCalling&&!callAccepted)
+			socket.emit("call_cancelled", { to: userToCall.id })
 		if(receivingCall)
 			socket.emit("call_ended", { to: appState.in_call.from.id })
 		setCallEnded(true)
@@ -138,24 +141,41 @@ function AudioCall() {
 	const rejectCall = () => {
 		stopCallRing()
 		socket.emit("call_rejected", { to: appState.in_call.from.id })
-		setCallRejected(true)
+		setIRejectedCall(true)
 	}
 
 	useEffect(()=>{
-		if(callEnded)
+		if(callEnded || myCallRejected)
 			{
 				stream.getTracks().forEach(track => track.stop())
 				connectionRef.current.destroy()
-				appDispatch({type: "callTo", data: null})
-				appDispatch({type: "callFrom", data: null})
+				appDispatch({type: "clearCall"})
 			}
-		if(callRejected)
+		else if(iRejectedCall)
 			{
-				appDispatch({type: "callTo", data: null})
-				appDispatch({type: "callFrom", data: null})
+				appDispatch({type: "clearCall"})
 			}
+
+		socket.on("call_ended", ()=>{
+			setCallEnded(true)
+		})
+
+		socket.on("call_cancelled", ()=>{
+			stopCallRing()
+			appDispatch({type: "clearCall"})
+		})
+
+		socket.on("call_rejected", ()=>{
+			setMyCallRejected(true)
+		})
+
+		return ()=>{
+			socket.off("call_acepted")
+			socket.off("call_ended")
+			socket.off("call_rejected")
+		}
 	// eslint-disable-next-line
-	},[callEnded, callRejected])
+	},[callEnded, myCallRejected, iRejectedCall])
 
 	return(
         <div className="video__page">

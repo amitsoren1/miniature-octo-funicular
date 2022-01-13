@@ -90,6 +90,10 @@ function ContextManager({children}) {
           case "callFrom":
             draft.in_call = action.data
             return
+          case "clearCall":
+            draft.in_call = initialState.in_call
+            draft.out_call = initialState.out_call
+            return
           default:
             return
         }

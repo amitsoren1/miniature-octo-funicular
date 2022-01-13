@@ -27,13 +27,19 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 
 		socket.on("went_offline", (msg)=>{
 			if(msg.user_id === user.chat_with.id)
-				setUserStatus("last seen " + msg.last_seen)
+				setUserStatus(msg.last_seen)
 		})
 
 		socket.on("went_online", (msg)=>{
 			if(msg.user_id === user.chat_with.id)
 				setUserStatus("online")
 		})
+
+		return ()=>{
+			socket.off('user_status')
+			socket.off('went_offline')
+			socket.off('went_online')
+		}
 	}, [])
 
 	return (

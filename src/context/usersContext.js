@@ -127,7 +127,7 @@ const UsersProvider = ({ children }) => {
 
 	return (
 		<UsersContext.Provider value={{ users, setUserAsUnread, addNewMessage, chatRead, stopCallRing }}>
-			<audio hidden src={callTune} ref={callAudioRef}></audio>
+			<audio hidden src={callTune} loop ref={callAudioRef}></audio>
 			{children}
 		</UsersContext.Provider>
 	);
