@@ -6,6 +6,13 @@
     background: rgb(0, 175, 156);
 }
 
+.sidebar-profile__content {
+  overflow: hidden;
+  /* flex: 1; */
+  position: relative;
+  padding-top: 6%;
+}
+
 .image {
     position: relative;
     width: 200px;
@@ -69,24 +76,21 @@
 
 .profile-pic__options {
     z-index: 10;
-    top: -100px;
-    right: -80px;
-    position: relative;
+    position: absolute;
+    top: 25%;
+    right: 10%;
     width: 170px;
     padding: 10px 0;
-    /* background-color: #323739; */
     background-color: white;
     align-items: left;
     border-radius: 3px;
     box-shadow: 0 2px 5px 0 #00000042, 0 2px 10px 0 rgba(0, 0, 0, .16);
     transition: all 0.2s ease-in;
-    opacity: 0;
-    transform: scale(0);
-}
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+  }
 
 .profile-pic__options--active {
-    opacity: 1;
-    transform: scale(1);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0);
 }
 
 .option-left__align {
@@ -184,7 +188,7 @@
   }
 
   .profile-infona {
-      margin-top: -175px;
+      padding-top: 9%;
       background: #f8f9fa;
   }
 

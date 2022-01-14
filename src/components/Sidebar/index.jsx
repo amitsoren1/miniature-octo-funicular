@@ -51,10 +51,7 @@ const Sidebar = () => {
 						iconClassName="sidebar__action-icon"
 						options={[
 							"New group",
-							"Create a room",
-							"Profile",
-							"Archived",
-							"Starred",
+							"Starred messages",
 							"Settings",
 							"Log out",
 						]}

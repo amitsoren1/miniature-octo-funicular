@@ -22,8 +22,7 @@
     border-radius: 3px;
     box-shadow: 0 2px 5px 0 #00000042, 0 2px 10px 0 rgba(0, 0, 0, .16);
     transition: all 0.2s ease-in;
-    opacity: 0;
-    transform: scale(0);
+    clip-path: polygon(100% 0, 100% 0, 100% 0, 100% 0);
 }
 
 .options-btn__options--right {
@@ -32,8 +31,7 @@
 }
 
 .options-btn__options--active {
-    opacity: 1;
-    transform: scale(1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .options-btn__option {

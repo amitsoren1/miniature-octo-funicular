@@ -83,7 +83,7 @@ return <>
         <div style={{display: "inline-block", textDecorationThickness:"10px", fontSize:"20px", fontWeight:600, paddingLeft:"15px", color:"#F6F6F6", height:"100%"}}> Profile </div>
     </div>
     <div align="center">
-		<div className="sidebar-contact__content" style={{paddingTop: "20px"}}>
+		<div className="sidebar-profile__content">
             <div className="image" onClick={()=>setPicOptions(!picOptions)}>
                 {appState.user.profile_picture&&<img className="image__img" src={appState.user.profile_picture} alt="Bricks"/>}
                 {!appState.user.profile_picture&&<Icon id="avatar" className="image__img"/>}
@@ -101,18 +101,18 @@ return <>
             </div>
             <ul
 				className={`profile-pic__options ${picOptions?"profile-pic__options--active":""}`}>
-					<li className="options-btn__option option-left__align" key={1} onClick={()=>setViewPic(true)}>
+					{appState.user.profile_picture&&<li className="options-btn__option option-left__align" key={1} onClick={()=>setViewPic(true)}>
 						View photo
-					</li>
+					</li>}
                     <li className="options-btn__option option-left__align" key={2}>
 						Take photo
 					</li>
                     <li className="options-btn__option option-left__align" key={3} onClick={e=>newPicRef.current.click()}>
 						Upload photo
 					</li>
-                    <li className="options-btn__option option-left__align" key={4} onClick={handleDeletePhoto}>
+                    {appState.user.profile_picture&&<li className="options-btn__option option-left__align" key={4} onClick={handleDeletePhoto}>
 						Remove photo
-					</li>
+					</li>}
                     <input type="file" ref={newPicRef} style={{display:"none"}} onChange={handleUploadPhoto}/>
 			</ul>
 
