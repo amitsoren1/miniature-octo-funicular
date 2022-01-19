@@ -34,7 +34,7 @@ function ContextManager({children}) {
             return
           case "logout":
             localStorage.removeItem("appToken")
-            return initialState
+            return {...initialState, socketConnected: true}
           case "updateUser":
             draft.user = {...draft.user, ...action.data}
             return

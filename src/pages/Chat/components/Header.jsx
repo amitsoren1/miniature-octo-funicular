@@ -40,6 +40,7 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 			socket.off('went_offline')
 			socket.off('went_online')
 		}
+	// eslint-disable-next-line
 	}, [])
 
 	return (
