@@ -41,7 +41,7 @@ const Header = ({ user, openProfileSidebar, openSearchSidebar }) => {
 			socket.off('went_online')
 		}
 	// eslint-disable-next-line
-	}, [])
+	}, [user])
 
 	return (
 		<header className="header chat__header">
